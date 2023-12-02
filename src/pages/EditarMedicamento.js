@@ -1,10 +1,10 @@
-import FormCadastraMedicamento from "../components/FormCadastraMedicamento";
+import FormEditaMedicamento from "../components/FormEditaMedicamento";
 import MenuNavegacao from "../components/MenuNavegacao";
 export default function CadastraMedicamento() {
   return (
     <>
       <MenuNavegacao />
-      <FormCadastraMedicamento />
+      <FormEditaMedicamento/>
     </>
   );
 }

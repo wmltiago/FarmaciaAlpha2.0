@@ -1,10 +1,12 @@
+import FormCaixa from "../components/FormCaixa";
 import MenuNavegacao from "../components/MenuNavegacao";
-import EstruturaAjuda from "../components/EstruturaAjuda";
-export default function Ajuda() {
+
+export default function Caixa() {
   return (
     <>
       <MenuNavegacao />
-      <EstruturaAjuda />
+      <FormCaixa/>
+      
     </>
   );
 }

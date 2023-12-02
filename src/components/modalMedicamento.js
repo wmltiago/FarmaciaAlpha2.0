@@ -1,4 +1,4 @@
-export default function CardMedicamento({
+export default function modalMedicamento({
   dosagem,
   medicamento,
   laboratorio,

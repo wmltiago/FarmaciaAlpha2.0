@@ -1,116 +1,221 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+
+
+
 export default function FormCadastraMedicamento() {
+
   //Objeto reservado para montar um medicamento que apos validacao sera enviado para lista de medicamentos.
-  const [medicamento, setMedicamento] = useState({
-    id: Math.random(),
-  });
-  //variavel reservada para montar a lista completa dos medicamentos e fazer GET do localStorage
-  let listaMedicamentos = JSON.parse(localStorage.getItem("ListaMedicamentos"));
-  //Funcao que armazena no array o novo medicamento criado e envia para o localstorage
-  function armazenaMedicamento(e) {
-    e.preventDefault();
-    listaMedicamentos.push(medicamento);
-    localStorage.setItem(
-      "ListaMedicamentos",
-      JSON.stringify(listaMedicamentos)
-    );
-    document.getElementById("reset").click();
-    alert(`Um novo Medicamento foi cadastrado com sucesso!`);
+  const [medicamento, setMedicamento] = useState("");
+  const [dosagem, setDosagem] = useState("");
+  const [laboratorio, setLaboratorio] = useState("");  
+  const [preco, setPreco] = useState("");
+  const [tipoSelecionado, setTipoSelecionado] = useState("");
+  const [fabricanteMedicamento, setFabricanteMedicamento] = useState("");
+  const [fornecedorMedicamento, setFornecedorMedicamento] = useState("");
+   
+  const [tipoMedicacao, setTipoMedicacao] = useState([]);
+  const [fabricante, setFabricante] = useState([]);
+  const [fornecedor, setFornecedor] = useState([]);
+
+
+  const listarTipoMedicamentos = async () => {
+
+    try {
+
+      const response = await axios.get("http://localhost:5000/tipo_medicacao/");
+
+      console.log(response);
+      const data = response.data;
+
+      setTipoMedicacao(data);
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
   }
+
+  const listarFabricante = async () => {
+
+    try {
+
+      const response = await axios.get("http://localhost:5000/fabricante/");
+
+      console.log(response);
+      const data = response.data;
+
+      setFabricante(data);
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+  const listarFornecedor = async () => {
+
+    try {
+
+      const response = await axios.get("http://localhost:5000/fornecedor/");
+
+      console.log(response);
+      const data = response.data;
+
+      setFornecedor(data);
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+  useEffect(() => {
+    listarTipoMedicamentos();
+    listarFabricante();
+    listarFornecedor();
+
+  }, [])
+
+  const salvarMedicamento = (e) => {
+
+    axios.post('http://localhost:5000/medicamentos', {
+      medicamento: medicamento,
+      dosagem: dosagem,
+      laboratorio: laboratorio,
+      tipo: tipoSelecionado,
+      preco: preco,      
+    })
+
+      .then(function (response) {
+        alert("Medicamento salvo com sucesso!")
+        setMedicamento("")
+        setDosagem("")
+        setLaboratorio("")
+        // setTipo("")
+        setPreco("")
+        setTipoSelecionado("")
+
+        console.log(response);
+
+      })
+
+      .catch(function (error) {
+        console.log(error);
+
+      });
+
+    return e.preventDefault();
+
+  }
+
   return (
     <div className="container">
       <div className="row justify-content-center mt-2 pt-5">
         <form
           autoComplete="off"
           className="row g-3 p-4"
-          onSubmit={armazenaMedicamento}
+          onSubmit={salvarMedicamento}
         >
           <h4>Cadastro de novo Medicamento:</h4>
-          <fieldset className="col-md-6">
-            <label htmlFor="inputMedicamento" className="form-label">
+          <fieldset className="col-md-4">
+            <label htmlFor="medicamento" className="form-label">
               Medicamento
             </label>
             <input
-              value={medicamento.medicamento || ""}
+              value={medicamento ? medicamento : ''} onChange={event => setMedicamento(event.target.value)}
               type="text"
               className="form-control"
-              id="inputMedicamento"
+              id="medicamento"
               placeholder="Informe o nome do medicamento"
               required
-              onChange={(e) =>
-                setMedicamento({ ...medicamento, medicamento: e.target.value })
-              }
-            />
-          </fieldset>
-          <fieldset className="col-md-6">
-            <label htmlFor="inputLaboratorio" className="form-label">
-              Laboratório
-            </label>
-            <input
-              value={medicamento.laboratorio || ""}
-              type="text"
-              className="form-control"
-              id="inputLaboratorio"
-              placeholder="Informe o laboratório"
-              required
-              onChange={(e) =>
-                setMedicamento({ ...medicamento, laboratorio: e.target.value })
-              }
             />
           </fieldset>
           <fieldset className="col-md-4">
-            <label htmlFor="inputDosagem" className="form-label">
+            <label htmlFor="tipo" className="form-label">
+              Fabricante (Laboratório)
+            </label>
+            <select
+              id="tipo"
+              className="form-select"
+              aria-label="Selecione o fabricante"
+              required
+              value={fabricanteMedicamento ? fabricanteMedicamento : ''}
+              onChange={event => setFabricanteMedicamento(event.target.value)}
+            >
+              <option defaultValue></option>
+              {fabricante.map((fabricante) => (
+                <option value={fabricante.id} key={fabricante.id}> {fabricante.nome_fabricante} </option>
+              ))}
+            </select>
+          </fieldset>
+          <fieldset className="col-md-4">
+            <label htmlFor="tipo" className="form-label">
+              Fornecedor
+            </label>
+            <select
+              id="fornecedor"
+              className="form-select"
+              aria-label="Selecione o fornecedor"
+              required
+              value={fornecedorMedicamento ? fornecedorMedicamento : ''}
+              onChange={event => setFornecedorMedicamento(event.target.value)}
+            >
+              <option defaultValue></option>
+              {fornecedor.map((fornecedor) => (
+                <option value={fornecedor.id} key={fornecedor.id}> {fornecedor.nome_fornecedor} </option>
+              ))}
+            </select>
+          </fieldset>
+          <fieldset className="col-md-4">
+            <label htmlFor="dosagem" className="form-label">
               Dosagem
             </label>
             <input
-              value={medicamento.dosagem || ""}
+              value={dosagem ? dosagem : ''} onChange={event => setDosagem(event.target.value)}
               type="text"
               className="form-control"
-              id="inputDosagem"
+              id="dosagem"
               placeholder="Informe a dosagem"
               required
-              onChange={(e) =>
-                setMedicamento({ ...medicamento, dosagem: e.target.value })
-              }
             />
           </fieldset>
           <fieldset className="col-md-4">
-            <label htmlFor="inputPreco" className="form-label">
+            <label htmlFor="preco" className="form-label">
               Preço Unitário
             </label>
             <input
-              value={medicamento.preco || ""}
-              type="text"
+              value={preco ? preco : ''} 
+              onChange={event => setPreco(event.target.value)}
+              type="number"
               className="form-control"
               id="inputPreco"
               placeholder="Informe o preço unitário"
               required
-              onChange={(e) =>
-                setMedicamento({ ...medicamento, preco: e.target.value })
-              }
             />
           </fieldset>
           <fieldset className="col-md-4">
-            <label htmlFor="inputTipo" className="form-label">
+            <label htmlFor="tipo" className="form-label">
               Tipo de medicamento
             </label>
             <select
-              id="inputTipo"
+              id="tipo"
               className="form-select"
               aria-label="Selecione o tipo do medicamento"
               required
-              onChange={(e) =>
-                setMedicamento({ ...medicamento, tipo: e.target.value })
-              }
+              value={tipoSelecionado ? tipoSelecionado : ''}
+              onChange={event => setTipoSelecionado(event.target.value)}
             >
               <option defaultValue></option>
-              <option value="Medicamento controlado">
-                Medicamento controlado
-              </option>
-              <option value="Medicamento comum">Medicamento comum</option>
+              {tipoMedicacao.map((tipo) => (
+                <option value={tipo.id} key={tipo.id}> {tipo.tipo} </option>
+              ))}
             </select>
           </fieldset>
-          <fieldset className="col-md-12">
+          {/* <fieldset className="col-md-12">
             <label htmlFor="inputDescricao" className="form-label">
               Descrição
             </label>
@@ -124,7 +229,7 @@ export default function FormCadastraMedicamento() {
                 setMedicamento({ ...medicamento, descricao: e.target.value })
               }
             ></textarea>
-          </fieldset>
+          </fieldset> */}
           <div className="d-grid gap-1 d-md-flex justify-content-md-end">
             <input
               id="reset"
@@ -132,15 +237,11 @@ export default function FormCadastraMedicamento() {
               type="reset"
               className="btn btn-secondary me-md-1"
               onClick={() => {
-                setMedicamento({
-                  id: Math.random(),
-                  medicamento: "",
-                  laboratorio: "",
-                  dosagem: "",
-                  preco: "",
-                  tipo: "",
-                  descricao: "",
-                });
+                setMedicamento("");
+                setDosagem("");
+                setLaboratorio("");
+                setPreco("");
+                // setTipo("");                               
               }}
             />
             <input

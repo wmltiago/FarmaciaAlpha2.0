@@ -1,27 +1,26 @@
 import MenuNavegacao from "../components/MenuNavegacao";
-import modalMedicamento from "../components/modalMedicamento";
+import CardMedicamento from "../components/CardMedicamento";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
 
-export default function ListaMedicamentos2() {
+export default function ListaMedicamentos() {
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
   const [medicamentos, setMedicamentos] = useState([]);
 
   let listaMedicamentos = medicamentos;
 
   useEffect(() => {
-    axios.get("http://localhost:5000/medicamentos/")
-      .then(response => {
-        setMedicamentos(response.data);
-        setFiltro(response.data);
-      })
-      .catch(error => {
-        console.error("Erro ao buscar medicamentos:", error);
-      });
+    axios.get("https://corsproxy.io/?http://premier.rf.gd/medicamentos.php")
+    .then(response => {
+      setMedicamentos(response.data);
+      setFiltro(response.data);
+    })
+    .catch(error => {
+      console.error("Erro ao buscar medicamentos:", error);
+    });
   }, []);
 
-
+  
 
   // Declaro variaveis para controle da exclusao de medicamentos da lista
   const [listaAnterior, setListaAnterior] = useState(medicamentos)
@@ -31,7 +30,7 @@ export default function ListaMedicamentos2() {
   const [filtrado, setFiltro] = useState(listaMedicamentos);
 
   // Declaro um useState para receber o que foi digitado pelo usuário
-  const [termo, setTermo] = useState("");
+  const [termo, setTermo] = useState([]);
 
   // Funcao compartilhada por props, exclui o card a partir do id que e carregado no onclick do botao excluir dentro do modal
   function apagaMedicamento(id) {
@@ -81,51 +80,21 @@ export default function ListaMedicamentos2() {
             ></input>
           </div>
           <div className="row g-3 mb-5">
-            <div>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Medicamento</th>
-                    <th scope="col">Dosagem</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Laboratário</th>
-                    <th scope="col">Preço</th>
-                    <th scope="col">Opções</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtrado.map((item) => {
-                    return (
-
-                      <tr key={item.id}>
-                        <th scope="row">{item.id}</th>
-                        <td>{item.medicamento}</td>
-                        <td>{item.dosagem}</td>
-                        <td>{item.tipo}</td>
-                        <td>{item.laboratorio}</td>
-                        <td>R$ {item.preco}</td>
-                        <td>
-                          <div className="dropdown">
-                            <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Ações
-                            </button>
-                            <ul className="dropdown-menu">
-                              <li><NavLink className="dropdown-item" to={`/formEditarMedicamento/${item.id}`}>Editar</NavLink></li>
-                              <li><a className="dropdown-item" href="">Excluir</a></li>
-                              <li><a className="dropdown-item" href="">Detalhes</a></li>
-                            </ul>
-                          </div>
-
-                        </td>
-                      </tr>
-
-                    );
-
-                  })}
-                </tbody>
-              </table>
-            </div>
+            {filtrado.map((item) => {
+              return (
+                <CardMedicamento
+                  excluir={apagaMedicamento}
+                  key={item.id}
+                  descricao={item.descricao}
+                  medicamento={item.medicamento}
+                  dosagem={item.dosagem}
+                  preco={item.preco}
+                  tipo={item.tipo}
+                  laboratorio={item.laboratorio}
+                  id={item.id}
+                />
+              );
+            })}
             {filtrado.length === 0 ? <div>Não existem medicamentos para serem apresentados.</div> : null}
           </div>
         </div>

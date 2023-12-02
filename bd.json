@@ -1,0 +1,186 @@
+{
+  "medicamentos": [
+    {
+      "id": 1,
+      "medicamento": "Paracetamol",
+      "dosagem": "500mg",
+      "laboratorio": "MedLab",
+      "tipo": "Analgésico",
+      "preco": 10.5,
+      "descricao": "Alívio de dores leves e febre."
+    },
+    {
+      "id": 2,
+      "medicamento": "Omeprazol",
+      "dosagem": "20mg",
+      "laboratorio": "PharmaLife",
+      "tipo": "Antiácido",
+      "preco": 15.75,
+      "descricao": "Indicado para tratar certas condições em que proporcionou muita produção de ácido no estômago. É usado para tratar úlceras gástricas (estômago) e duodenais (intestino) e refluxo gastroesofágico (quando o suco gástrico do estômago volta para o esôfago). Muitas vezes o omeprazol é usado também em combinação com outros antibióticos para tratar as úlceras associadas às infecções causadas pela bactéria Helycobacter pylori."
+    },
+    {
+      "id": 3,
+      "medicamento": "Amoxicilina",
+      "dosagem": "250mg",
+      "laboratorio": "BioPharma",
+      "tipo": "Antibiótico",
+      "preco": 20.2,
+      "descricao": "Tratamento de infecções bacterianas."
+    },
+    {
+      "id": 4,
+      "medicamento": "Dipirona",
+      "dosagem": "300mg",
+      "laboratorio": "HealthCare",
+      "tipo": "Analgésico",
+      "preco": 8.9,
+      "descricao": "Alívio de dores e redução de febre."
+    },
+    {
+      "id": 5,
+      "medicamento": "Cetirizina",
+      "dosagem": "10mg",
+      "laboratorio": "Wellness",
+      "tipo": "Antialérgico",
+      "preco": 12.3,
+      "descricao": "Tratamento de sintomas alérgicos."
+    },
+    {
+      "id": 6,
+      "medicamento": "Ibuprofeno",
+      "dosagem": "400mg",
+      "laboratorio": "MediCare",
+      "tipo": "Anti-inflamatório",
+      "preco": 18.6,
+      "descricao": "Reduz a inflamação e alivia a dor."
+    },
+    {
+      "id": 7,
+      "medicamento": "Aspirina",
+      "dosagem": "100mg",
+      "laboratorio": "PharmaWell",
+      "tipo": "Analgésico",
+      "preco": 7.8,
+      "descricao": "Alívio de dores e prevenção de coágulos."
+    },
+    {
+      "id": 8,
+      "medicamento": "Dexclorfeniramina",
+      "dosagem": "5mg",
+      "laboratorio": "BioCare",
+      "tipo": "Antialérgico",
+      "preco": 14.25,
+      "descricao": "Alívio de sintomas alérgicos."
+    },
+    {
+      "id": 9,
+      "medicamento": "Simvastatina",
+      "dosagem": "20mg",
+      "laboratorio": "PharmaCare",
+      "tipo": "Hipolipemiante",
+      "preco": 25.9,
+      "descricao": "Reduz os níveis de colesterol."
+    },
+    {
+      "id": 10,
+      "medicamento": "Metformina",
+      "dosagem": "500mg",
+      "laboratorio": "HealthPharma",
+      "tipo": "Antidiabético",
+      "preco": 22.15,
+      "descricao": "Controle do diabetes tipo 2."
+    },
+    {
+      "medicamento": "TESTE",
+      "dosagem": "12mg",
+      "laboratorio": "VICOFARMA",
+      "tipo": "",
+      "preco": "12",
+      "id": 11
+    },
+    {
+      "medicamento": "TEST2",
+      "dosagem": "13",
+      "laboratorio": "VICOFARMA2",
+      "tipo": "",
+      "preco": "13",
+      "id": 12
+    },
+    {
+      "medicamento": "TEST3",
+      "dosagem": "14",
+      "laboratorio": "GHSDAFSHUID",
+      "tipo": "",
+      "preco": "14",
+      "id": 13
+    },
+    {
+      "medicamento": "TESTE4",
+      "dosagem": "15",
+      "laboratorio": "WSDHKFHSD",
+      "tipo": "",
+      "preco": "15",
+      "id": 14
+    },
+    {
+      "medicamento": "TESTE5",
+      "dosagem": "16",
+      "laboratorio": "SMMSD",
+      "tipo": "2",
+      "preco": "16",
+      "id": 15
+    },
+    {
+      "medicamento": "SFSDSDFSDF",
+      "dosagem": "12",
+      "laboratorio": "SDFSDFFDSF",
+      "tipo": "1",
+      "preco": "12",
+      "id": 16
+    }
+  ],
+  "clientes": [
+    {
+      "id": 1,
+      "nome": "Tiago Borges",
+      "email": "tiago@email.com",
+      "cpf": "12345678911"
+    },
+    {
+      "id": 2,
+      "nome": "Artemilson Reis",
+      "email": "artemilson@email.com",
+      "cpf": "00000000012"
+    }
+  ],
+  "tipo_medicacao": [
+    {
+      "id": 1,
+      "tipo": "Medicação controlada"
+    },
+    {
+      "id": 2,
+      "tipo": "Medicação normal"
+    }
+  ],
+  "fabricante": [
+    {
+      "id": 1,
+      "nome_fabricante": "MEDFARMA"
+    },
+    {
+      "id": 2,
+      "nome_fabricante": "VICOFARMA"
+    }
+  ],
+  "fornecedor": [
+    {
+      "id": 1,
+      "nome_fornecedor": "MEDLEY"
+    },
+    {
+      "id": 2,
+      "nome_fornecedor": "VICOFARMA"
+    }
+  ]
+}

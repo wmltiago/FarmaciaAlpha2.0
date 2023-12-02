@@ -22,7 +22,7 @@ export default function FormLogin() {
           onSubmit={(e) => {
             e.preventDefault();
             setLogin(true);
-            navigate("/mapa");
+            navigate("/caixa");
           }}
           style={{ backgroundColor: "#CCE3DE" }}
         >
