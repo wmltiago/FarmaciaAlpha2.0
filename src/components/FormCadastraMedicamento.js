@@ -8,9 +8,9 @@ export default function FormCadastraMedicamento() {
   //Objeto reservado para montar um medicamento que apos validacao sera enviado para lista de medicamentos.
   const [medicamento, setMedicamento] = useState("");
   const [dosagem, setDosagem] = useState("");
-  const [laboratorio, setLaboratorio] = useState("");  
+   
   const [preco, setPreco] = useState("");
-  const [tipoSelecionado, setTipoSelecionado] = useState("");
+  const [tipoMedicamento, setTipoMedicamento] = useState("");
   const [fabricanteMedicamento, setFabricanteMedicamento] = useState("");
   const [fornecedorMedicamento, setFornecedorMedicamento] = useState("");
    
@@ -85,19 +85,20 @@ export default function FormCadastraMedicamento() {
     axios.post('http://localhost:5000/medicamentos', {
       medicamento: medicamento,
       dosagem: dosagem,
-      laboratorio: laboratorio,
-      tipo: tipoSelecionado,
+      fabricante: fabricanteMedicamento,
+      fornecedor: fornecedorMedicamento,
+      tipo: tipoMedicamento,
       preco: preco,      
     })
 
       .then(function (response) {
         alert("Medicamento salvo com sucesso!")
         setMedicamento("")
-        setDosagem("")
-        setLaboratorio("")
-        // setTipo("")
+        setDosagem("")      
         setPreco("")
-        setTipoSelecionado("")
+        setTipoMedicamento("")
+        setFabricanteMedicamento("")
+        setFornecedorMedicamento("")        
 
         console.log(response);
 
@@ -135,11 +136,11 @@ export default function FormCadastraMedicamento() {
             />
           </fieldset>
           <fieldset className="col-md-4">
-            <label htmlFor="tipo" className="form-label">
+            <label htmlFor="fabricante" className="form-label">
               Fabricante (Laboratório)
             </label>
             <select
-              id="tipo"
+              id="fabricante"
               className="form-select"
               aria-label="Selecione o fabricante"
               required
@@ -153,7 +154,7 @@ export default function FormCadastraMedicamento() {
             </select>
           </fieldset>
           <fieldset className="col-md-4">
-            <label htmlFor="tipo" className="form-label">
+            <label htmlFor="fornecedor" className="form-label">
               Fornecedor
             </label>
             <select
@@ -206,8 +207,8 @@ export default function FormCadastraMedicamento() {
               className="form-select"
               aria-label="Selecione o tipo do medicamento"
               required
-              value={tipoSelecionado ? tipoSelecionado : ''}
-              onChange={event => setTipoSelecionado(event.target.value)}
+              value={tipoMedicamento ? tipoMedicamento : ''}
+              onChange={event => setTipoMedicamento(event.target.value)}
             >
               <option defaultValue></option>
               {tipoMedicacao.map((tipo) => (
@@ -238,10 +239,9 @@ export default function FormCadastraMedicamento() {
               className="btn btn-secondary me-md-1"
               onClick={() => {
                 setMedicamento("");
-                setDosagem("");
-                setLaboratorio("");
+                setDosagem("");                
                 setPreco("");
-                // setTipo("");                               
+                                             
               }}
             />
             <input

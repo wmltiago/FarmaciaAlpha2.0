@@ -103,7 +103,7 @@ export default function ListaMedicamentos2() {
                         <td>{item.medicamento}</td>
                         <td>{item.dosagem}</td>
                         <td>{item.tipo}</td>
-                        <td>{item.laboratorio}</td>
+                        <td>{item.fabricante}</td>
                         <td>R$ {item.preco}</td>
                         <td>
                           <div className="dropdown">
