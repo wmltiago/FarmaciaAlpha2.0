@@ -1,19 +1,19 @@
 import MenuNavegacao from "../components/MenuNavegacao";
-import modalMedicamento from "../components/modalMedicamento";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
-export default function ListaMedicamentos2() {
+export default function ListaClientes() {
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
-  const [medicamentos, setMedicamentos] = useState([]);
+  const [clientes, setClientes] = useState([]);
 
-  let listaMedicamentos = medicamentos;
+  let listaClientes = clientes;
 
   useEffect(() => {
-    axios.get("http://localhost:5000/medicamentos/")
+    axios.get("http://localhost:5000/clientes/")
       .then(response => {
-        setMedicamentos(response.data);
+        setClientes(response.data);
         setFiltro(response.data);
       })
       .catch(error => {
@@ -24,36 +24,23 @@ export default function ListaMedicamentos2() {
 
 
   // Declaro variaveis para controle da exclusao de medicamentos da lista
-  const [listaAnterior, setListaAnterior] = useState(medicamentos)
+  const [listaAnterior, setListaAnterior] = useState(clientes)
   let novaLista;
 
   // Declaro um useState para receber de inicio a lista de medicamentos, ele sera utilizado para filtrar a pesquisa do usuario
-  const [filtrado, setFiltro] = useState(listaMedicamentos);
+  const [filtrado, setFiltro] = useState(listaClientes);
 
   // Declaro um useState para receber o que foi digitado pelo usuário
   const [termo, setTermo] = useState("");
 
-  // Funcao compartilhada por props, exclui o card a partir do id que e carregado no onclick do botao excluir dentro do modal
-  function apagaMedicamento(id) {
-    novaLista = listaAnterior.filter((item) => {
-      if (item.id !== id) {
-        return item;
-      } else {
-        return false;
-      }
-    });
-    
-    setListaAnterior(novaLista)
-    alert(`O medicamento selecionado foi excluido da lista com sucesso.`)
-  }
-
+ 
   // useEffect ira alterar o valor do filtrado toda vez que o termo digitado mudar ou algum card for excluido
   useEffect(() => {
     // O valor de filtrado sera composto apenas pelos itens da listaMedicamentos que corresponderem ao que foi digitado pelo usuario
     setFiltro(
-      listaMedicamentos.filter((item) => {
+      listaClientes.filter((item) => {
         if (
-          item.medicamento
+          item.cpf
             .toLocaleLowerCase()
             .indexOf(termo.toLocaleLowerCase()) !== -1
         ) {
@@ -86,11 +73,15 @@ export default function ListaMedicamentos2() {
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Medicamento</th>
-                    <th scope="col">Dosagem</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Laboratário</th>
-                    <th scope="col">Preço</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">CEP</th>
+                    <th scope="col">Rua</th>
+                    <th scope="col">Municipio</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Complemento</th>
                     <th scope="col">Opções</th>
                   </tr>
                 </thead>
@@ -100,11 +91,15 @@ export default function ListaMedicamentos2() {
 
                       <tr key={item.id}>
                         <th scope="row">{item.id}</th>
-                        <td>{item.medicamento}</td>
-                        <td>{item.dosagem}</td>
-                        <td>{item.tipo}</td>
-                        <td>{item.fabricante}</td>
-                        <td>R$ {item.preco}</td>
+                        <td>{item.nome}</td>
+                        <td>{item.cpf}</td>
+                        <td>{item.email}</td>
+                        <td>{item.telefone}</td>
+                        <td>{item.endereco.cep}</td>
+                        <td>{item.endereco.logradouro}</td>
+                        <td>{item.endereco.municipio}</td>
+                        <td>{item.endereco.estado}</td>
+                        <td>{item.endereco.complemento}</td>
                         <td>
                           <div className="dropdown">
                             <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

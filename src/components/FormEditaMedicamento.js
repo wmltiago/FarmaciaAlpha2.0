@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 
 export default function FormEditaMedicamento() {
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [edit, setEdit] = useState([]);
   const [medicamento, setMedicamento] = useState("");
@@ -95,16 +96,11 @@ export default function FormEditaMedicamento() {
     })
 
       .then(function (response) {
-        alert("Medicamento salvo com sucesso!")
-        setMedicamento("")
-        setDosagem("")
-        setPreco("")
-        setTipoMedicamento("")
-        setFabricanteMedicamento("")
-        setFornecedorMedicamento("")
-
+        
+        alert("Medicamento salvo com sucesso!");               
+        navigate("/lista-medicamentos2/")
         console.log(response);
-
+        
       })
 
       .catch(function (error) {
