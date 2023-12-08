@@ -1,15 +1,17 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
-import axios from 'axios';
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
-export default function FormCadastraCliente() {
-  //Objeto reservado para montar um medicamento que apos validacao sera enviado para lista de medicamentos.
 
+export default function FormEditaCliente() {
+
+  const { id } = useParams();
   const navigate = useNavigate();
 
+  const [edit, setEdit] = useState([]);
   const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [endereco, setEndereco] = useState({
     cep: '',
@@ -21,48 +23,17 @@ export default function FormCadastraCliente() {
     numero: ''
   });
 
-  //Função pra consultar o CEP
-  const fetchCep = async (cep) => {
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await response.json();
 
-      if (!data.erro) {
-        setEndereco({
-          cep: data.cep,
-          logradouro: data.logradouro,
-          bairro: data.bairro,
-          municipio: data.localidade,
-          estado: data.uf,
-        });
-      }
-    } catch (error) {
-      alert('Erro ao buscar o CEP:', error);
-    }
-  }
-
-  //Chama a consulta sempre que mudar CEP
-  useEffect(() => {
-    if (endereco.cep.length === 8) {
-      fetchCep(endereco.cep);
-    }
-  }, [endereco.cep]);
-
-  //Atualizar valor digitado no CEP
-  const handleCepChange = (event) => {
-    const newCep = event.target.value;
-    setEndereco((prevEndereco) => ({ ...prevEndereco, cep: newCep }));
-
-  }
+  console.log(edit)
 
 
-  const salvarCliente = (e) => {
+  const salvarEdicaoCliente = (e) => {
 
-    axios.post('http://localhost:5000/clientes', {
+    axios.put(`http://localhost:5000/clientes/${id}`, {
       nome: nome,
       email: email,
-      cpf: cpf,
       telefone: telefone,
+      cpf: cpf,
       endereco:
       {
         cep: endereco.cep,
@@ -73,12 +44,13 @@ export default function FormCadastraCliente() {
         complemento: endereco.complemento,
         numero: endereco.numero
       }
+
     })
 
       .then(function (response) {
-        alert("Cliente salvo com sucesso!");
 
-        navigate("/caixa")
+        alert("Edição salva com sucesso!");
+        navigate("/lista-clientes/")
         console.log(response);
 
       })
@@ -92,8 +64,23 @@ export default function FormCadastraCliente() {
 
   }
 
+  useEffect(() => {
+    axios.get(`http://localhost:5000/clientes/${id}`)
+      .then(response => {
+        setEdit(response.data);
+        setNome(response.data.nome);
+        setEmail(response.data.email);
+        setTelefone(response.data.telefone);
+        setEndereco(response.data.endereco);
+        setCpf(response.data.cpf);
+       
+      })
+      .catch(error => {
+        console.error("Erro ao buscar medicamentos:", error);
+      });
+  }, []);
+
   return (
-    //Formulario criado com bootstrap e feito modificacoes para responsividade, em cada input existe um onchange que envia valor para var farmacia
     <div
       className="container"
       onLoad={() => document.getElementById("reset").click()}
@@ -104,7 +91,7 @@ export default function FormCadastraCliente() {
           className="row g-3 mt-5 ps-4 pe-4 pt-5"
           onSubmit={(e) => {
             e.preventDefault();
-            salvarCliente();
+            salvarEdicaoCliente();
           }}
         >
           <h4>Cadastro de cliente</h4>
@@ -113,12 +100,11 @@ export default function FormCadastraCliente() {
               Nome
             </label>
             <input
-              value={nome || ''}
+              value={nome}
               onChange={event => setNome(event.target.value)}
               type="text"
               className="form-control"
               id="nome"
-              placeholder="Informe nome completo"
               required
             />
           </fieldset>
@@ -127,12 +113,11 @@ export default function FormCadastraCliente() {
               CPF
             </label>
             <input
-              value={cpf || ''}
+              value={cpf}
               onChange={event => setCpf(event.target.value)}
               type="text"
               className="form-control"
               id="cpf"
-              placeholder="000.000.000-00"
               required
               maxLength={14}
             />
@@ -143,12 +128,11 @@ export default function FormCadastraCliente() {
               E-mail
             </label>
             <input
-              value={email || ''}
+              value={email}
               onChange={event => setEmail(event.target.value)}
               type="email"
               className="form-control"
               id="email"
-              placeholder="email@email.com"
               required
             />
           </fieldset>
@@ -158,12 +142,11 @@ export default function FormCadastraCliente() {
               Celular
             </label>
             <input
-              value={telefone || ''}
+              value={telefone}
               onChange={event => setTelefone(event.target.value)}
               type="number"
               className="form-control"
               id="celular"
-              placeholder="(99) 9.9999-9999"
               required
             />
           </fieldset>
@@ -172,13 +155,15 @@ export default function FormCadastraCliente() {
               CEP
             </label>
             <input
+              value={endereco.cep}
               type="text"
-              maxLength={8}
               className="form-control"
               id="cep"
-              placeholder="Apenas números {8}"
               required
-              onChange={handleCepChange}
+              onChange={(e) =>
+                setEndereco({ ...endereco, cep: e.target.value })
+              }
+
             />
           </fieldset>
           <fieldset className="col-md-8 col-lg-6">
@@ -186,7 +171,7 @@ export default function FormCadastraCliente() {
               Logradouro
             </label>
             <input
-              value={endereco.logradouro || ''}
+              value={endereco.logradouro}
               type="phone"
               className="form-control"
               id="logradouro"
@@ -202,7 +187,7 @@ export default function FormCadastraCliente() {
               Número
             </label>
             <input
-              value={endereco.numero || ''}
+              value={endereco.numero}
               type="number"
               className="form-control"
               id="numero"
@@ -218,7 +203,7 @@ export default function FormCadastraCliente() {
               Estado
             </label>
             <input
-              value={endereco.estado || ''}
+              value={endereco.estado}
               type="text"
               className="form-control"
               id="estado"
@@ -234,8 +219,8 @@ export default function FormCadastraCliente() {
               Bairro
             </label>
             <input
-              value={endereco.bairro || ''}
-              type="text"              
+              value={endereco.bairro}
+              type="text"
               className="form-control"
               id="bairro"
               placeholder="Informe o bairro"
@@ -250,7 +235,7 @@ export default function FormCadastraCliente() {
               Cidade
             </label>
             <input
-              value={endereco.municipio || ''}
+              value={endereco.municipio}
               type="text"
               className="form-control"
               id="cidade"
@@ -267,7 +252,7 @@ export default function FormCadastraCliente() {
               Complemento
             </label>
             <input
-              value={endereco.complemento || ''}
+              value={endereco.complemento}
               type="text"
               className="form-control"
               id="complemento"
@@ -280,9 +265,9 @@ export default function FormCadastraCliente() {
 
 
           <div className="d-grid gap-1 d-md-flex justify-content-md-end">
-            <NavLink to={"/caixa"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
+            <NavLink to={"/lista-clientes"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
             <input
-              value="Cadastrar"
+              value="Atualizar"
               type="submit"
               className="btn btn-success"
             />

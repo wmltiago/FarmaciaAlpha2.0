@@ -58,7 +58,7 @@ export default function ListaClientes() {
       <div className="container">
         <div className="row g-3 ps-4 pe-4 pt-5">
           <div className="col-lg-5 col-md-12 mt-5">
-            <h4 className="pt-4 mb-0 mt-2">Lista de Medicamentos:</h4>
+            <h4 className="pt-4 mb-0 mt-2">Lista de Clientes</h4>
             <input
               className="form-control mt-3"
               aria-describedby="inputGroup-sizing-sm"
@@ -106,7 +106,7 @@ export default function ListaClientes() {
                               Ações
                             </button>
                             <ul className="dropdown-menu">
-                              <li><NavLink className="dropdown-item" to={`/formEditarMedicamento/${item.id}`}>Editar</NavLink></li>
+                              <li><NavLink className="dropdown-item" to={`/formEditarCliente/${item.id}`}>Editar</NavLink></li>
                               <li><a className="dropdown-item" href="">Excluir</a></li>
                               <li><a className="dropdown-item" href="">Detalhes</a></li>
                             </ul>

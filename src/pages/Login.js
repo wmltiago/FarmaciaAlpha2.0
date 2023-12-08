@@ -5,8 +5,7 @@ export default function Login() {
   
   return (
     <>
-    <BuscaDados/>
-    <MenuNavegacao/>
+    <BuscaDados/>    
     <FormLogin />
     </>
   );

@@ -12,6 +12,7 @@ import EditarMedicamento from "../pages/EditarMedicamento";
 import FormCadastraCliente from "../components/FormCadastraCliente";
 import CadastraCliente from "../pages/CadastraCliente";
 import ListaClientes from "../pages/ListaClientes";
+import EditarCliente from "../pages/EditarCliente";
 
 export default function Rotas() {
   return (
@@ -33,6 +34,7 @@ export default function Rotas() {
         <Route path="/ajuda" element={<Ajuda />} />        
         <Route path="/caixa" element={<Caixa/>} /> 
         <Route path="/formEditarMedicamento/:id" element={<EditarMedicamento/>} /> 
+        <Route path="/formEditarCliente/:id" element={<EditarCliente/>} /> 
         <Route path="/cadastraCliente" element={<CadastraCliente/>} /> 
         <Route path="/lista-clientes" element={<ListaClientes/>} /> 
         
