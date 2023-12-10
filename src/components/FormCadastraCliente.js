@@ -35,6 +35,8 @@ export default function FormCadastraCliente() {
           municipio: data.localidade,
           estado: data.uf,
         });
+      }else{
+        alert("CEP INEXISTENTE")
       }
     } catch (error) {
       alert('Erro ao buscar o CEP:', error);
@@ -58,7 +60,7 @@ export default function FormCadastraCliente() {
 
   const salvarCliente = (e) => {
 
-    axios.post('http://localhost:5000/clientes', {
+    axios.post("https://app-7gnwrtklwa-rj.a.run.app/api/clientes", {
       nome: nome,
       email: email,
       cpf: cpf,
@@ -169,14 +171,14 @@ export default function FormCadastraCliente() {
           </fieldset>
           <fieldset className="col-md-2 col-lg-3">
             <label htmlFor="cep" className="form-label">
-              CEP
+              CEP <span style={{fontSize: "0.8rem", color: "red"}}>*apenas números</span>
             </label>
             <input
               type="text"
               maxLength={8}
               className="form-control"
               id="cep"
-              placeholder="Apenas números {8}"
+              placeholder="00000000"
               required
               onChange={handleCepChange}
             />

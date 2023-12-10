@@ -56,14 +56,32 @@ export default function MenuNavegacao() {
                   <NavLink className="dropdown-item" to={"/lista-clientes"}>Listagem</NavLink>
                 </div>
               </li>
+
+              <li key="dropdown" className="nav-item dropdown">
+                <button className="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{backgroundColor:"transparent", border:"none"}}>
+                  Fabricante
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <NavLink className="dropdown-item" to={"/cadastra-medicamento"}>Cadastrar</NavLink>
+                  <NavLink className="dropdown-item" to={"/lista-medicamentos2"}>Listagem</NavLink>
+                </div>
+              </li>
+              <li key="dropdown" className="nav-item dropdown">
+                <button className="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{backgroundColor:"transparent", border:"none"}}>
+                  Fornecedor
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <NavLink className="dropdown-item" to={"/cadastra-fornecedor"}>Cadastrar</NavLink>
+                  <NavLink className="dropdown-item" to={"/lista-fornecedores"}>Listagem</NavLink>
+                </div>
+              </li>
+
               <li key="cadastra-farmacia" className="nav-item">
                 <NavLink className="nav-link" type='button' to={"/caixa"} activeclassname="active-link">Fluxo de caixa</NavLink>
               </li>
+              
               <li key="perguntas-freq" className="nav-item">
-                <NavLink className="nav-link" type='button' to={"/ajuda"} activeclassname="active-link">Ajuda</NavLink>
-              </li>
-              <li key="perguntas-freq" className="nav-item">
-                <NavLink className="nav-link" type='button' to={"/ajuda"} activeclassname="active-link">Sair</NavLink>
+                <NavLink className="nav-link" type='button' to={"/"} activeclassname="active-link">Sair</NavLink>
               </li>
               {/* <li key="mapa" className="nav-item">
                 <NavLink className="nav-link btn btn-sm btn-dark border-0 rounded-5 pe-3" type='button' to={"/mapa"} activeclassname="active-link">

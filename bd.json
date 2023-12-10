@@ -10,12 +10,12 @@
       "descricao": "Alívio de dores leves e febre."
     },
     {
-      "medicamento": "TESTE5",
-      "dosagem": "2",
-      "fabricante": "3",
-      "fornecedor": "1",
-      "tipo": "2",
-      "preco": "2",
+      "medicamento": "Dipirona",
+      "dosagem": "1g",
+      "fabricante": "MedLab",
+      "fornecedor": "MedLab",
+      "tipo": "Analgésico",
+      "preco": 1.50,
       "id": 3
     }
   ],
@@ -95,12 +95,41 @@
   ],
   "fornecedor": [
     {
+      "id": 3,
+      "nome": "FORNECEDOR 1",
+      "telefone": "81999999999",
+      "cnpj": "098.098.098-12",
+      "endereco": {
+        "cep": "54310060",
+        "logradouro": "teste",
+        "municipio": "JAB",
+        "bairro": "PRAZERES",
+        "estado": "PE",
+        "complemento": "sdfsdg",
+        "numero": "12"
+      }
+    }
+  ],
+  "formaPagamento": [
+    {
       "id": 1,
-      "nome_fornecedor": "MEDLEY"
+      "descricao": "Dinheiro",
+      "ativo": true
     },
     {
       "id": 2,
-      "nome_fornecedor": "VICOFARMA"
+      "descricao": "Cartão de débito",
+      "ativo": true
+    },
+    {
+      "id": 3,
+      "descricao": "Cartão de crédito",
+      "ativo": true
+    },
+    {
+      "id": 4,
+      "descricao": "Pix",
+      "ativo": true
     }
-  ]
-}
+
+]}

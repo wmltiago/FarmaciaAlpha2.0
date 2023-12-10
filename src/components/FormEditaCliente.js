@@ -65,7 +65,8 @@ export default function FormEditaCliente() {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/clientes/${id}`)
+    axios.get(`https://app-7gnwrtklwa-rj.a.run.app/api/clientes/${id}`)
+    //axios.get(`http://localhost:5000/clientes/${id}`)
       .then(response => {
         setEdit(response.data);
         setNome(response.data.nome);

@@ -11,7 +11,8 @@ export default function ListaClientes() {
   let listaClientes = clientes;
 
   useEffect(() => {
-    axios.get("http://localhost:5000/clientes/")
+    axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/clientes")
+    //axios.get("http://localhost:5000/clientes/")
       .then(response => {
         setClientes(response.data);
         setFiltro(response.data);
@@ -121,7 +122,7 @@ export default function ListaClientes() {
                 </tbody>
               </table>
             </div>
-            {filtrado.length === 0 ? <div>Não existem medicamentos para serem apresentados.</div> : null}
+            {filtrado.length === 0 ? <div>Não existem clientes para serem apresentados.</div> : null}
           </div>
         </div>
       </div>
