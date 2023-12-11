@@ -86,7 +86,7 @@ export default function FormCadastraCliente() {
       })
 
       .catch(function (error) {
-        console.log(error);
+        console.log(error.response.data.errors);
 
       });
 

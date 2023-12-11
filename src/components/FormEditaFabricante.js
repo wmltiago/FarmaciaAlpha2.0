@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 
-export default function FormEditaFornecedor() {
+export default function FormEditaFabricante() {
 
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [edit, setEdit] = useState([]);
-  const [nome, setFornecedorNome] = useState("");
-  const [cnpj, setFornecedorCnpj] = useState("");
-  const [endereco, setFornecedorEndereco ] = useState({
+  const [nome_fabricante, setFabricanteNome] = useState("");
+  const [cnpj_fabricante, setFabricanteCnpj] = useState("");
+  const [endereco_fabricante, setFabricanteEndereco ] = useState({
     cep: '',
     logradouro: '',
     municipio: '',
@@ -25,18 +25,18 @@ export default function FormEditaFornecedor() {
   console.log(edit)
 
 
-  const salvarEdicaoFornecedor = (e) => {
+  const salvarEdicaoFabricante = (e) => {
 
-    axios.put(`http://localhost:5000/fornecedor/${id}`, {
-      nome: nome,
-      cnpj: cnpj,
-      endereco: endereco,
+    axios.put(`http://localhost:5000/fabricante/${id}`, {
+      nome: nome_fabricante,
+      cnpj: cnpj_fabricante,
+      endereco: endereco_fabricante,
     })
 
       .then(function (response) {
         
-        alert("Fornecedor salvo com sucesso!");               
-        navigate("/lista-fornecedores")
+        alert("Fabricante salvo com sucesso!");               
+        navigate("/ListaFabricantes/")
         console.log(response);
         
       })
@@ -51,17 +51,17 @@ export default function FormEditaFornecedor() {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/fornecedor/${id}`)
+    axios.get(`http://localhost:5000/fabricante/${id}`)
       .then(response => {
         setEdit(response.data);
-        setFornecedorNome(response.data.nome);
-        setFornecedorCnpj(response.data.cnpj);
-        setFornecedorEndereco(response.data.endereco);
+        setFabricanteNome(response.data.fabricante);
+        setFabricanteCnpj(response.data.cnpj);
+        setFabricanteEndereco(response.data.endereco);
         
 
       })
       .catch(error => {
-        console.error("Erro ao buscar medicamentos:", error);
+        console.error("Erro ao buscar fabricantes:", error);
       });
   }, []);
 
@@ -71,26 +71,28 @@ export default function FormEditaFornecedor() {
         <form
           autoComplete="off"
           className="row g-3 p-4"
-          onSubmit={salvarEdicaoFornecedor}
+          onSubmit={salvarEdicaoFabricante}
         >
-          <h4>Editar Fornecedor:</h4>
+          <h4>Editar Fabricante:</h4>
           <fieldset className="col-md-4">
-            <label htmlFor="nome" className="form-label">
-              fornecedor
+            <label htmlFor="fabricante" className="form-label">
+              Fabricante
             </label>
             <input
-              value={nome || ""}
+              value={fabricante}
               type="text"
               className="form-control"
-              id="nome"
+              id="fabricante"
               placeholder="Informe o nome do fornecedor"
               required
-              onChange={event => setFornecedorNome(event.target.value)}
+              onChange={event => setFabricanteNome(event.target.value)}
             />
-          </fieldset>         
+          </fieldset>
+
+          <h4>Editar Fabricante:</h4>
           <fieldset className="col-md-4">
             <label htmlFor="cnpj" className="form-label">
-              cnpj
+              CNPJ
             </label>
             <input
               value={cnpj}
@@ -99,7 +101,7 @@ export default function FormEditaFornecedor() {
               id="cnpj"
               placeholder="Informe o CNPJ"
               required
-              onChange={event => setFornecedorCnpj(event.target.value)}
+              onChange={event => setFabricanteCnpj(event.target.value)}
             />
           </fieldset>
 
@@ -108,13 +110,13 @@ export default function FormEditaFornecedor() {
               CEP
             </label>
             <input
-              value={endereco.cep || ""}
+              value={endereco.cep}
               type="text"
               className="form-control"
               id="cep"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, cep: e.target.value })
+                setFabricanteEndereco({ ...endereco, cep: e.target.value })
               }
 
             />
@@ -124,14 +126,14 @@ export default function FormEditaFornecedor() {
               Logradouro
             </label>
             <input
-              value={endereco.logradouro || ""}
+              value={endereco.logradouro}
               type="phone"
               className="form-control"
               id="logradouro"
               placeholder="Rua/Avenida . . ."
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, logradouro: e.target.value })
+                setFabricanteEndereco({ ...endereco, logradouro: e.target.value })
               }
             />
           </fieldset>
@@ -140,14 +142,14 @@ export default function FormEditaFornecedor() {
               Número
             </label>
             <input
-              value={endereco.numero || ""}
+              value={endereco.numero}
               type="number"
               className="form-control"
               id="numero"
               placeholder="0000"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, numero: e.target.value })
+                setFabricanteEndereco({ ...endereco, numero: e.target.value })
               }
             />
           </fieldset>
@@ -156,14 +158,14 @@ export default function FormEditaFornecedor() {
               Estado
             </label>
             <input
-              value={endereco.estado || ""}
+              value={endereco.estado}
               type="text"
               className="form-control"
               id="estado"
               placeholder="Informe o estado"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, estado: e.target.value })
+                setFabricanteEndereco({ ...endereco, estado: e.target.value })
               }
             />
           </fieldset>
@@ -172,14 +174,14 @@ export default function FormEditaFornecedor() {
               Bairro
             </label>
             <input
-              value={endereco.bairro || ""}
+              value={endereco.bairro}
               type="text"
               className="form-control"
               id="bairro"
               placeholder="Informe o bairro"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, bairro: e.target.value })
+                setFabricanteEndereco({ ...endereco, bairro: e.target.value })
               }
             />
           </fieldset>
@@ -188,14 +190,14 @@ export default function FormEditaFornecedor() {
               Cidade
             </label>
             <input
-              value={endereco.municipio || ""}
+              value={endereco.municipio}
               type="text"
               className="form-control"
               id="cidade"
               placeholder="Informe a cidade"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, municipio: e.target.value })
+                setFabricanteEndereco({ ...endereco, municipio: e.target.value })
               }
             />
           </fieldset>
@@ -205,13 +207,13 @@ export default function FormEditaFornecedor() {
               Complemento
             </label>
             <input
-              value={endereco.complemento || ""}
+              value={endereco.complemento}
               type="text"
               className="form-control"
               id="complemento"
               placeholder="Perto do estabelecimento . . . "
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, complemento: e.target.value })
+                setFabricanteEndereco({ ...endereco, complemento: e.target.value })
               }
             />
           </fieldset>
@@ -230,7 +232,7 @@ export default function FormEditaFornecedor() {
             ></textarea>
           </fieldset> */}
           <div className="d-grid gap-1 d-md-flex justify-content-md-end">
-          <NavLink to={"/lista-fornecedores"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
+          <NavLink to={"/ListaFabricantes/"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
             <input
               value="Atualizar"
               type="submit"

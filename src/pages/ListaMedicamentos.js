@@ -11,7 +11,7 @@ export default function ListaMedicamentos2() {
   let listaMedicamentos = medicamentos;
 
   useEffect(() => {
-    axios.get("http://localhost:5000/medicamentos/")
+    axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/medicacoes")
       .then(response => {
         setMedicamentos(response.data);
         setFiltro(response.data);
@@ -71,7 +71,7 @@ export default function ListaMedicamentos2() {
       <div className="container">
         <div className="row g-3 ps-4 pe-4 pt-5">
           <div className="col-lg-5 col-md-12 mt-5">
-            <h4 className="pt-4 mb-0 mt-2">Lista de Medicamentos:</h4>
+            <h4 className="pt-4 mb-0 mt-2">Lista de Medicamentos</h4>
             <input
               className="form-control mt-3"
               aria-describedby="inputGroup-sizing-sm"
@@ -82,14 +82,12 @@ export default function ListaMedicamentos2() {
           </div>
           <div className="row g-3 mb-5">
             <div>
-              <table className="table">
+              <table className="table text-center">
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Medicamento</th>
-                    <th scope="col">Dosagem</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Laboratário</th>
+                    <th scope="col">Informações</th>                                        
                     <th scope="col">Preço</th>
                     <th scope="col">Opções</th>
                   </tr>
@@ -100,10 +98,8 @@ export default function ListaMedicamentos2() {
 
                       <tr key={item.id}>
                         <th scope="row">{item.id}</th>
-                        <td>{item.medicamento}</td>
-                        <td>{item.dosagem}</td>
-                        <td>{item.tipo}</td>
-                        <td>{item.fabricante}</td>
+                        <td>{item.nome}</td>                        
+                        <td>{item.tipoConteudo.descricao} - {item.tipos[0].descricao} - {item.conteudo}</td>                        
                         <td>R$ {item.preco}</td>
                         <td>
                           <div className="dropdown">

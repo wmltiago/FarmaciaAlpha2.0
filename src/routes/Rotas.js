@@ -21,29 +21,27 @@ export default function Rotas() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<RotaPrivada />}>          
-          <Route path="/cadastra-farmacia" element={<CadastraFarmacia />} />
-          <Route
-            path="/cadastra-medicamento"
-            element={<CadastraMedicamento />}
-          />
-          <Route path="/lista-medicamentos" element={<ListaMedicamentos />} />
-          <Route path="/lista-medicamentos2" element={<ListaMedicamentos2 />} />
+        <Route element={<RotaPrivada />}>
+
         </Route>
-        
+
+        <Route path="/cadastra-farmacia" element={<CadastraFarmacia />} />
+        <Route path="/cadastra-medicamento" element={<CadastraMedicamento />} />
+        <Route path="/lista-medicamentos" element={<ListaMedicamentos />} />
+        <Route path="/lista-medicamentos2" element={<ListaMedicamentos2 />} />
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Navigate replace to="/" />} />
-        <Route path="/login" element={<Navigate replace to="/" />} />        
-        <Route path="/ajuda" element={<Ajuda />} />        
-        <Route path="/caixa" element={<Caixa/>} /> 
-        <Route path="/formEditarMedicamento/:id" element={<EditarMedicamento/>} /> 
-        <Route path="/formEditarCliente/:id" element={<EditarCliente/>} /> 
-        <Route path="/cadastraCliente" element={<CadastraCliente/>} /> 
-        <Route path="/lista-clientes" element={<ListaClientes/>} /> 
-        <Route path="/cadastra-fornecedor" element={<CadastraFornecedor/>} />
-        <Route path="/lista-fornecedores" element={<ListaFornecedores/>} /> 
-        <Route path="/formEditarFornecedor/:id" element={<EditarFornecedores/>} />
-        
+        <Route path="/login" element={<Navigate replace to="/" />} />
+        <Route path="/ajuda" element={<Ajuda />} />
+        <Route path="/caixa" element={<Caixa />} />
+        <Route path="/formEditarMedicamento/:id" element={<EditarMedicamento />} />
+        <Route path="/formEditarCliente/:id" element={<EditarCliente />} />
+        <Route path="/cadastraCliente" element={<CadastraCliente />} />
+        <Route path="/lista-clientes" element={<ListaClientes />} />
+        <Route path="/cadastra-fornecedor" element={<CadastraFornecedor />} />
+        <Route path="/lista-fornecedores" element={<ListaFornecedores />} />
+        <Route path="/formEditarFornecedor/:id" element={<EditarFornecedores />} />
+
         <Route path="*" element={<NaoEncontrado />} />
       </Routes>
     </BrowserRouter>

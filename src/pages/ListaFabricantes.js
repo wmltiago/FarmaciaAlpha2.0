@@ -4,41 +4,41 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
-export default function ListaFornecedores() {
+export default function listaFabricantes() {
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
-  const [fornecedores, setFornecedores] = useState([]);
+  const [fabricantes, setFabricantes] = useState([]);
 
-  let listaFornecedores = fornecedores;
+  let listaFabricantes = fabricantes;
 
   useEffect(() => {
-    axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/fornecedores")
+    axios.get("http://localhost:5000/fabricantes/")
       .then(response => {
-        setFornecedores(response.data);
+        setFabricantes(response.data);
         setFiltro(response.data);
       })
       .catch(error => {
-        console.error("Erro ao buscar fornecedores:", error);
+        console.error("Erro ao buscar fabricantes:", error);
       });
   }, []);
 
 
 
   // Declaro variaveis para controle da exclusao de fornecedores da lista
-  const [listaAnterior, setListaAnterior] = useState(fornecedores)
+  const [listaAnterior, setListaAnterior] = useState(fabricantes)
   let novaLista;
 
   // Declaro um useState para receber de inicio a lista de medicamentos, ele sera utilizado para filtrar a pesquisa do usuario
-  const [filtrado, setFiltro] = useState(listaFornecedores);
+  const [filtrado, setFiltro] = useState(listaFabricantes);
 
   // Declaro um useState para receber o que foi digitado pelo usuário
   const [termo, setTermo] = useState("");
 
-
+ 
   // useEffect ira alterar o valor do filtrado toda vez que o termo digitado mudar ou algum card for excluido
   useEffect(() => {
     // O valor de filtrado sera composto apenas pelos itens da listaMedicamentos que corresponderem ao que foi digitado pelo usuario
     setFiltro(
-      listaFornecedores.filter((item) => {
+      listaFabricantes.filter((item) => {
         if (
           item.cnpj
             .toLocaleLowerCase()
@@ -58,13 +58,13 @@ export default function ListaFornecedores() {
       <div className="container">
         <div className="row g-3 ps-4 pe-4 pt-5">
           <div className="col-lg-5 col-md-12 mt-5">
-            <h4 className="pt-4 mb-0 mt-2">Lista de Fornecedores</h4>
+            <h4 className="pt-4 mb-0 mt-2">Lista de Fabricantes:</h4>
             <input
               className="form-control mt-3"
               aria-describedby="inputGroup-sizing-sm"
               value={termo}
               onChange={(e) => setTermo(e.target.value)}
-              placeholder="Pesquise o nome do fornecedor ..."
+              placeholder="Pesquise o nome do medicamento ..."
             ></input>
           </div>
           <div className="row g-3 mb-5">
@@ -102,7 +102,7 @@ export default function ListaFornecedores() {
                               Ações
                             </button>
                             <ul className="dropdown-menu">
-                              <li><NavLink className="dropdown-item" to={`/formEditarFornecedor/${item.id}`}>Editar</NavLink></li>
+                              <li><NavLink className="dropdown-item" to={`/formEditarFabricante/${item.id}`}>Editar</NavLink></li>
                               <li><a className="dropdown-item" href="">Excluir</a></li>
                               <li><a className="dropdown-item" href="">Detalhes</a></li>
                             </ul>

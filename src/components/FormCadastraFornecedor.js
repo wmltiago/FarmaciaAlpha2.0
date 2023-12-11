@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { useDadosFarmacia } from "../contexts/useDadosFarmacia";
 import { NavLink, useNavigate } from "react-router-dom";
 
 export default function FormCadastraFornecedor() {
@@ -15,6 +14,7 @@ export default function FormCadastraFornecedor() {
     logradouro: '',
     municipio: '',
     estado: '',
+    bairro: '',
     complemento: '',
     numero:''
   }); 
@@ -22,7 +22,7 @@ export default function FormCadastraFornecedor() {
 
   const salvarFornecedor = (e) => {
 
-    axios.post('http://localhost:5000/fornecedores', {
+    axios.post('https://app-7gnwrtklwa-rj.a.run.app/api/fornecedores', {
       nome: nome_fornecedor,
       cnpj: cnpj,
       endereco:
@@ -31,6 +31,7 @@ export default function FormCadastraFornecedor() {
         logradouro: endereco.logradouro,
         municipio: endereco.municipio,
         estado: endereco.estado,
+        bairro: endereco.bairro,
         complemento: endereco.complemento,
         numero: endereco.numero
       }

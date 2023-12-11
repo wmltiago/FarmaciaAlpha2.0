@@ -29,7 +29,7 @@ export default function FormEditaCliente() {
 
   const salvarEdicaoCliente = (e) => {
 
-    axios.put(`http://localhost:5000/clientes/${id}`, {
+    axios.put(`https://app-7gnwrtklwa-rj.a.run.app/api/clientes/${id}`, {
       nome: nome,
       email: email,
       telefone: telefone,

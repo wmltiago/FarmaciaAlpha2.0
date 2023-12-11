@@ -1,40 +1,40 @@
 {
   "medicamentos": [
     {
-      "id": 1,
-      "medicamento": "Paracetamol",
-      "dosagem": "500mg",
-      "fabricante": "MedLab",
-      "tipo": "Analgésico",
-      "preco": 10.5,
-      "descricao": "Alívio de dores leves e febre."
+      "nome": "Paracetamol",
+      "conteudo": "500mg",
+      "fabricante": "1",
+      "fornecedor": "3",
+      "tipoMedicacao": "2",
+      "preco": "5",
+      "id": 1
     },
     {
-      "medicamento": "Dipirona",
-      "dosagem": "1g",
-      "fabricante": "MedLab",
-      "fornecedor": "MedLab",
-      "tipo": "Analgésico",
-      "preco": 1.50,
-      "id": 3
+      "nome": "Dipirona",
+      "conteudo": "1MG",
+      "fabricante": "2",
+      "fornecedor": "3",
+      "tipoMedicacao": "2",
+      "preco": "1.50",
+      "id": 2
     }
   ],
   "clientes": [
     {
-      "id": 1,
-      "nome": "Tiago Borges",
-      "email": "tiago@email.com",
-      "cpf": "12345678911",
-      "telefone": "81999984723",
+      "nome": "Test1",
+      "email": "test@mail.com",
+      "telefone": "81988889696",
+      "cpf": "93290082083",
       "endereco": {
-        "cep": "53.190-045",
-        "logradouro": "1",
-        "numero": 6,
-        "municipio": "2",
-        "bairro": "3",
-        "estado": "4",
-        "complemento": "5"
-      }
+        "cep": "53190045",
+        "logradouro": "rua x",
+        "municipio": "Olinda",
+        "bairro": "Alto do alto",
+        "estado": "Pernambuco",
+        "complemento": "T",
+        "numero": "112"
+      },
+      "id": 1
     },
     {
       "nome": "Artemilson Reis da Silva",
@@ -97,7 +97,6 @@
     {
       "id": 3,
       "nome": "FORNECEDOR 1",
-      "telefone": "81999999999",
       "cnpj": "098.098.098-12",
       "endereco": {
         "cep": "54310060",
@@ -108,6 +107,20 @@
         "complemento": "sdfsdg",
         "numero": "12"
       }
+    },
+    {
+      "nome": "teste",
+      "cnpj": "2312312313",
+      "endereco": {
+        "cep": "3123213213",
+        "logradouro": "srsdfdsfdsf",
+        "municipio": "rererer",
+        "estado": "re",
+        "complemento": "rerererer",
+        "numero": "232",
+        "bairro": "teste"
+      },
+      "id": 4
     }
   ],
   "formaPagamento": [
@@ -131,5 +144,50 @@
       "descricao": "Pix",
       "ativo": true
     }
-
-]}
+  ],
+  "compras": [
+    {
+      "formaPagamento": 4,
+      "parcelas": 1,
+      "funcionario": 1,
+      "cliente": 1,
+      "itensCompra": [
+        {
+          "id": 1
+        },
+        {
+          "id": 3
+        }
+      ],
+      "id": 2
+    },
+    {
+      "formaPagamento": 3,
+      "parcelas": 1,
+      "funcionario": 1,
+      "cliente": "",
+      "itensCompra": [
+        {
+          "id": 1,
+          "quantidade": 3,
+          "precoUnitario": 10.5
+        }
+      ],
+      "id": 3
+    },
+    {
+      "formaPagamento": 1,
+      "parcelas": 1,
+      "funcionario": 1,
+      "cliente": "",
+      "itensCompra": [
+        {
+          "id": 3,
+          "quantidade": 2,
+          "precoUnitario": 1.5
+        }
+      ],
+      "id": 4
+    }
+  ]
+}

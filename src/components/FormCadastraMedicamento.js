@@ -7,23 +7,44 @@ export default function FormCadastraMedicamento() {
 
   //Objeto reservado para montar um medicamento que apos validacao sera enviado para lista de medicamentos.
   const [medicamento, setMedicamento] = useState("");
-  const [dosagem, setDosagem] = useState("");
-   
+  const [conteudo, setConteudo] = useState("");
+
   const [preco, setPreco] = useState("");
   const [tipoMedicamento, setTipoMedicamento] = useState("");
   const [fabricanteMedicamento, setFabricanteMedicamento] = useState("");
   const [fornecedorMedicamento, setFornecedorMedicamento] = useState("");
-   
+  const [conteudoDoMedicamento, setConteudoDoMedicamento] = useState("");
+
   const [tipoMedicacao, setTipoMedicacao] = useState([]);
   const [fabricante, setFabricante] = useState([]);
   const [fornecedor, setFornecedor] = useState([]);
+  const [tipoConteudo, setTipoConteudo] = useState([]);
+
+
+  const listarTipoConteudo = async () => {
+
+    try {
+
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/tipos-conteudo");
+
+      console.log(response);
+      const data = response.data;
+
+      setTipoConteudo(data);
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 
 
   const listarTipoMedicamentos = async () => {
 
     try {
 
-      const response = await axios.get("http://localhost:5000/tipo_medicacao/");
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/tipos-medicacoes");
 
       console.log(response);
       const data = response.data;
@@ -41,7 +62,7 @@ export default function FormCadastraMedicamento() {
 
     try {
 
-      const response = await axios.get("http://localhost:5000/fabricante/");
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/fabricantes");
 
       console.log(response);
       const data = response.data;
@@ -59,7 +80,7 @@ export default function FormCadastraMedicamento() {
 
     try {
 
-      const response = await axios.get("http://localhost:5000/fornecedor/");
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/fornecedores");
 
       console.log(response);
       const data = response.data;
@@ -77,28 +98,39 @@ export default function FormCadastraMedicamento() {
     listarTipoMedicamentos();
     listarFabricante();
     listarFornecedor();
+    listarTipoConteudo();
 
   }, [])
 
   const salvarMedicamento = (e) => {
 
-    axios.post('http://localhost:5000/medicamentos', {
-      medicamento: medicamento,
-      dosagem: dosagem,
-      fabricante: fabricanteMedicamento,
-      fornecedor: fornecedorMedicamento,
-      tipo: tipoMedicamento,
-      preco: preco,      
+    axios.post('https://app-7gnwrtklwa-rj.a.run.app/api/medicacoes', {
+      nome: medicamento,
+      conteudo: conteudo,
+      tipoConteudo: {
+        id: Number(conteudoDoMedicamento)
+      },
+      fabricante: {
+        id: Number(fabricanteMedicamento)
+      },
+      fornecedor: {
+        id: Number(fornecedorMedicamento)
+      },
+      tipoMedicacao: [{
+        id: Number(tipoMedicamento)
+      }],
+      preco: preco
     })
 
       .then(function (response) {
         alert("Medicamento salvo com sucesso!")
         setMedicamento("")
-        setDosagem("")      
+        setConteudo("")
         setPreco("")
         setTipoMedicamento("")
         setFabricanteMedicamento("")
-        setFornecedorMedicamento("")        
+        setFornecedorMedicamento("")
+        setConteudoDoMedicamento("")
 
         console.log(response);
 
@@ -149,7 +181,7 @@ export default function FormCadastraMedicamento() {
             >
               <option defaultValue></option>
               {fabricante.map((fabricante) => (
-                <option value={fabricante.id} key={fabricante.id}> {fabricante.nome_fabricante} </option>
+                <option value={fabricante.id} key={fabricante.id}> {fabricante.nome} </option>
               ))}
             </select>
           </fieldset>
@@ -167,16 +199,16 @@ export default function FormCadastraMedicamento() {
             >
               <option defaultValue></option>
               {fornecedor.map((fornecedor) => (
-                <option value={fornecedor.id} key={fornecedor.id}> {fornecedor.nome_fornecedor} </option>
+                <option value={fornecedor.id} key={fornecedor.id}> {fornecedor.nome} </option>
               ))}
             </select>
           </fieldset>
-          <fieldset className="col-md-4">
+          <fieldset className="col-md-2">
             <label htmlFor="dosagem" className="form-label">
               Dosagem
             </label>
             <input
-              value={dosagem ? dosagem : ''} onChange={event => setDosagem(event.target.value)}
+              value={conteudo ? conteudo : ''} onChange={event => setConteudo(event.target.value)}
               type="text"
               className="form-control"
               id="dosagem"
@@ -184,12 +216,12 @@ export default function FormCadastraMedicamento() {
               required
             />
           </fieldset>
-          <fieldset className="col-md-4">
+          <fieldset className="col-md-2">
             <label htmlFor="preco" className="form-label">
               Preço Unitário
             </label>
             <input
-              value={preco ? preco : ''} 
+              value={preco ? preco : ''}
               onChange={event => setPreco(event.target.value)}
               type="number"
               className="form-control"
@@ -197,6 +229,24 @@ export default function FormCadastraMedicamento() {
               placeholder="Informe o preço unitário"
               required
             />
+          </fieldset>
+          <fieldset className="col-md-4">
+            <label htmlFor="tipoConteudo" className="form-label">
+              Tipo do conteudo
+            </label>
+            <select
+              id="tipoConteudo"
+              className="form-select"
+              aria-label="Selecione o tipo do conteudo"
+              required
+              value={conteudoDoMedicamento ? conteudoDoMedicamento : ''}
+              onChange={event => setConteudoDoMedicamento(event.target.value)}
+            >
+              <option defaultValue></option>
+              {tipoConteudo.map((tipo) => (
+                <option value={tipo.id} key={tipo.id}> {tipo.descricao}</option>
+              ))}
+            </select>
           </fieldset>
           <fieldset className="col-md-4">
             <label htmlFor="tipo" className="form-label">
@@ -212,25 +262,11 @@ export default function FormCadastraMedicamento() {
             >
               <option defaultValue></option>
               {tipoMedicacao.map((tipo) => (
-                <option value={tipo.id} key={tipo.id}> {tipo.tipo} </option>
+                <option value={tipo.id} key={tipo.id}> {tipo.descricao} </option>
               ))}
             </select>
           </fieldset>
-          {/* <fieldset className="col-md-12">
-            <label htmlFor="inputDescricao" className="form-label">
-              Descrição
-            </label>
-            <textarea
-              value={medicamento.descricao || ""}
-              className="form-control"
-              id="inputDescricao"
-              rows="5"
-              maxLength={870}
-              onChange={(e) =>
-                setMedicamento({ ...medicamento, descricao: e.target.value })
-              }
-            ></textarea>
-          </fieldset> */}
+          
           <div className="d-grid gap-1 d-md-flex justify-content-md-end">
             <input
               id="reset"
@@ -239,9 +275,9 @@ export default function FormCadastraMedicamento() {
               className="btn btn-secondary me-md-1"
               onClick={() => {
                 setMedicamento("");
-                setDosagem("");                
+                setConteudo("");
                 setPreco("");
-                                             
+
               }}
             />
             <input

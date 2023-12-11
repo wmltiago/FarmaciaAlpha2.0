@@ -4,7 +4,7 @@ export default function MenuNavegacao() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: "#0069a3" }}>
       <div className="container-fluid">
-        <NavLink className="navbar-brand" to={"/home"} activeclassname="active-link">
+        <NavLink className="navbar-brand" to={"/caixa"} activeclassname="active-link">
           <img
             src={logo}
             alt=""

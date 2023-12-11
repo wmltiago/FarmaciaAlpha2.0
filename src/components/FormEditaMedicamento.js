@@ -16,18 +16,41 @@ export default function FormEditaMedicamento() {
   const [tipoMedicamento, setTipoMedicamento] = useState("");
   const [fabricanteMedicamento, setFabricanteMedicamento] = useState("");
   const [fornecedorMedicamento, setFornecedorMedicamento] = useState("");
+  const [conteudoDoMedicamento, setConteudoDoMedicamento] = useState("");
 
   console.log(edit)
+  console.log("TESTE CONTEUDO",conteudoDoMedicamento)
+  
 
-  const [tipoMedicacao, setTipoMedicacao] = useState([]);
+  const [listatipoMedicacao, setTipoMedicacao] = useState([]);
   const [fabricante, setFabricante] = useState([]);
   const [fornecedor, setFornecedor] = useState([]);
+  const [tipoConteudo, setTipoConteudo] = useState([]);
+
+
+  const listarTipoConteudo = async () => {
+
+    try {
+
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/tipos-conteudo");
+
+      console.log(response);
+      const data = response.data;
+
+      setTipoConteudo(data);
+      console.log("Conteudos",data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 
   const listarTipoMedicamentos = async () => {
 
     try {
 
-      const response = await axios.get("http://localhost:5000/tipo_medicacao/");
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/tipos-medicacoes");
 
       console.log(response);
       const data = response.data;
@@ -45,7 +68,7 @@ export default function FormEditaMedicamento() {
 
     try {
 
-      const response = await axios.get("http://localhost:5000/fabricante/");
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/fabricantes");
 
       console.log(response);
       const data = response.data;
@@ -63,7 +86,7 @@ export default function FormEditaMedicamento() {
 
     try {
 
-      const response = await axios.get("http://localhost:5000/fornecedor/");
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/fornecedores");
 
       console.log(response);
       const data = response.data;
@@ -81,26 +104,36 @@ export default function FormEditaMedicamento() {
     listarTipoMedicamentos();
     listarFabricante();
     listarFornecedor();
+    listarTipoConteudo();
 
   }, [])
 
   const salvarEdicaoMedicamento = (e) => {
 
-    axios.put(`http://localhost:5000/medicamentos/${id}`, {
-      medicamento: medicamento,
-      dosagem: dosagem,
-      fabricante: fabricanteMedicamento,
-      fornecedor: fornecedorMedicamento,
-      tipo: tipoMedicamento,
-      preco: preco,
+    axios.put(`https://app-7gnwrtklwa-rj.a.run.app/api/medicacoes/${id}`, {
+      nome: medicamento,
+      conteudo: dosagem,
+      tipoConteudo: {
+        id: Number(conteudoDoMedicamento)
+      },
+      fabricante: {
+        id: Number(fabricanteMedicamento)
+      },
+      fornecedor: {
+        id: Number(fornecedorMedicamento)
+      },
+      tipoMedicacao: [{
+        id: Number(tipoMedicamento)
+      }],
+      preco: preco      
     })
 
       .then(function (response) {
-        
-        alert("Medicamento salvo com sucesso!");               
+
+        alert("Medicamento salvo com sucesso!");
         navigate("/lista-medicamentos2/")
         console.log(response);
-        
+
       })
 
       .catch(function (error) {
@@ -113,16 +146,17 @@ export default function FormEditaMedicamento() {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/medicamentos/${id}`)
+    axios.get(`https://app-7gnwrtklwa-rj.a.run.app/api/medicacoes/${id}`)
       .then(response => {
         setEdit(response.data);
-        setMedicamento(response.data.medicamento);
-        setDosagem(response.data.dosagem);
+        setMedicamento(response.data.nome);
+        setDosagem(response.data.conteudo);
         setPreco(response.data.preco);
-        setTipoMedicamento(response.data.tipo);
+        setTipoMedicamento(response.data.tipos);
         setFabricanteMedicamento(response.data.fabricante);
         setFornecedorMedicamento(response.data.fornecedor);
-        
+        setConteudoDoMedicamento(response.data.tipoConteudo);
+
 
       })
       .catch(error => {
@@ -138,7 +172,7 @@ export default function FormEditaMedicamento() {
           className="row g-3 p-4"
           onSubmit={salvarEdicaoMedicamento}
         >
-          <h4>Editar Medicamento:</h4>
+          <h4>Editar Medicamento</h4>
           <fieldset className="col-md-4">
             <label htmlFor="medicamento" className="form-label">
               Medicamento
@@ -162,13 +196,13 @@ export default function FormEditaMedicamento() {
               className="form-select"
               aria-label="Selecione o fabricante"
               required
-              defaultValue = {edit.fabricante}
+              defaultValue={edit.fabricante}
               value={fabricanteMedicamento}
               onChange={event => setFabricanteMedicamento(event.target.value)}
             >
-              
+
               {fabricante.map((fabricante) => (
-                <option value={fabricante.id} key={fabricante.id}> {fabricante.nome_fabricante} </option>
+                <option value={fabricante.id} key={fabricante.id}> {fabricante.nome} </option>
               ))}
             </select>
           </fieldset>
@@ -181,18 +215,18 @@ export default function FormEditaMedicamento() {
               className="form-select"
               aria-label="Selecione o fornecedor"
               required
-              defaultValue = {edit.fornecedor}
-              value={fornecedorMedicamento}
+              defaultValue={fornecedorMedicamento.id}
+              value={fornecedorMedicamento.id}
               onChange={event => setFornecedorMedicamento(event.target.value)}
-            >              
+            >
               {fornecedor.map((fornecedor) => (
-                <option value={fornecedor.id} key={fornecedor.id}> {fornecedor.nome_fornecedor} </option>
+                <option value={fornecedor.id} key={fornecedor.id}> {fornecedor.nome} </option>
               ))}
             </select>
           </fieldset>
-          <fieldset className="col-md-4">
+          <fieldset className="col-md-2">
             <label htmlFor="inputDosagem" className="form-label">
-              Dosagem
+              Conteudo (Dosagem)
             </label>
             <input
               value={dosagem}
@@ -204,7 +238,7 @@ export default function FormEditaMedicamento() {
               onChange={event => setDosagem(event.target.value)}
             />
           </fieldset>
-          <fieldset className="col-md-4">
+          <fieldset className="col-md-2">
             <label htmlFor="preco" className="form-label">
               Preço Unitário
             </label>
@@ -219,6 +253,25 @@ export default function FormEditaMedicamento() {
             />
           </fieldset>
           <fieldset className="col-md-4">
+            <label htmlFor="tipoConteudo" className="form-label">
+              Tipo do conteudo
+            </label>
+            <select
+              id="tipoConteudo"
+              className="form-select"
+              aria-label="Selecione o tipo do conteudo"
+              required
+              defaultValue={conteudoDoMedicamento.id}
+              value={conteudoDoMedicamento.id}
+              onChange={event => setConteudoDoMedicamento(event.target.value)}
+            >
+              <option defaultValue></option>
+              {tipoConteudo.map((tipo) => (
+                <option value={tipo.id} key={tipo.id}> {tipo.descricao}</option>
+              ))}
+            </select>
+          </fieldset>
+          <fieldset className="col-md-4">
             <label htmlFor="tipo" className="form-label">
               Tipo de medicamento
             </label>
@@ -227,12 +280,12 @@ export default function FormEditaMedicamento() {
               className="form-select"
               aria-label="Selecione o tipo do medicamento"
               required
-              defaultValue = {edit.tipo}
-              value={tipoMedicamento}
+              defaultValue={tipoMedicamento.id}
+              value={tipoMedicamento.id}
               onChange={event => setTipoMedicamento(event.target.value)}
-            >              
-              {tipoMedicacao.map((tipo) => (
-                <option value={tipo.id} key={tipo.id}> {tipo.tipo} </option>
+            >
+              {listatipoMedicacao.map((tipo) => (
+                <option value={tipo.id} key={tipo.id}> {tipo.descricao} </option>
               ))}
             </select>
           </fieldset>
@@ -250,7 +303,7 @@ export default function FormEditaMedicamento() {
             ></textarea>
           </fieldset> */}
           <div className="d-grid gap-1 d-md-flex justify-content-md-end">
-          <NavLink to={"/lista-medicamentos2/"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
+            <NavLink to={"/lista-medicamentos2/"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
             <input
               value="Atualizar"
               type="submit"

@@ -1,7 +1,7 @@
 import logoNota from "../imagens/logo-farmacia-alpha-cupom.png"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 
 export default function FormCaixa() {
@@ -17,14 +17,67 @@ export default function FormCaixa() {
   const [nomeCliente, setNomeCliente] = useState('');
 
   const [formaPag, setFormaPag] = useState([]);
-  const [formaPagSelect, setFormaPagSelect] = useState("");
+  const [formaPagSelect, setFormaPagSelect] = useState(1);
+
+  const navigate = useNavigate();
+
+
+  const salvarCompra = async () => {
+    try {
+
+      const itensCompra = items.map(({ id, quantidade, precoUnitario }) => ({ id, quantidade, precoUnitario }));
+
+      const dadosCompra = {
+        formaPagamento: {
+          id: Number(formaPagSelect)
+        },
+        parcelas: 1, // ou o valor que desejar
+        //funcionario: 1, 
+        cliente: idCliente ? {
+          id: idCliente
+        } : undefined,
+        itensCompra: itensCompra.map(item => ({
+          ...item, 
+          medicacao: {
+            id: item.id
+          }
+        }))
+      };
+
+      // Envie os dados para a API
+      await axios.post("https://app-7gnwrtklwa-rj.a.run.app/api/compras", dadosCompra);
+      // await axios.post("http://localhost:5000/compras", dadosCompra);
+
+      // Limpe os itens do carrinho e outros estados necessários
+      setItems([]);
+      setNomeCliente("");
+      setIdCliente("");
+      setFormaPagSelect("");
+
+      // Resetar a busca de clientes
+      setSearchTermCliente("");
+      setSearchResultsClientes([]);
+
+      // Resetar a busca de produtos
+      setSearchTerm("");
+      setSearchResults([]);
+
+      // Feche o modal
+      navigate("/caixa");
+      // Adicione lógica aqui se necessário
+      console.log(dadosCompra);
+
+    } catch (error) {
+      console.error('Erro ao finalizar a compra:', error);
+    }
+  };
 
 
   const listarFormaPag = async () => {
 
     try {
 
-      const response = await axios.get("http://localhost:5000/formaPagamento/");
+      const response = await axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/formas-pagamento");
 
       console.log(response);
       const data = response.data;
@@ -62,7 +115,8 @@ export default function FormCaixa() {
 
     if (e.target.value.length >= 3) {
       try {
-        const response = await axios.get(`http://localhost:5000/clientes?nome_like=${e.target.value}`);
+        const response = await axios.get(`https://app-7gnwrtklwa-rj.a.run.app/api/clientes/search?cpf=${e.target.value}`);
+        // const response = await axios.get(`http://localhost:5000/clientes?cpf_like=${e.target.value}`);
         setSearchResultsClientes(response.data);
       } catch (error) {
         console.error('Erro ao buscar clientes:', error);
@@ -75,7 +129,7 @@ export default function FormCaixa() {
 
     if (e.target.value.length >= 3) {
       try {
-        const response = await axios.get(`http://localhost:5000/medicamentos?medicamento_like=${e.target.value}`);
+        const response = await axios.get(`https://app-7gnwrtklwa-rj.a.run.app/api/medicacoes/search?nome=${e.target.value}`);
         setSearchResults(response.data);
       } catch (error) {
         console.error('Erro ao buscar medicamentos:', error);
@@ -102,14 +156,14 @@ export default function FormCaixa() {
 
     if (existingItemIndex !== -1) {
       const updatedItems = [...items];
-      updatedItems[existingItemIndex].quantity += Number(qtd);
+      updatedItems[existingItemIndex].quantidade += Number(qtd);
       setItems(updatedItems);
     } else {
       const newItem = {
         id: item.id,
-        medicamento: item.medicamento,
-        preco: Number(item.preco),
-        quantity: qtd,
+        nome: item.nome,
+        precoUnitario: Number(item.preco),
+        quantidade: qtd,
       };
       setItems((prevItems) => [...prevItems, newItem]);
     }
@@ -121,10 +175,10 @@ export default function FormCaixa() {
   const removeItemFromSale = (itemId) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === itemId ? { ...item, quantity: Math.max(item.quantity - 1, 0) } : item
+        item.id === itemId ? { ...item, quantidade: Math.max(item.quantidade - 1, 0) } : item
       )
     );
-    setItems((prevItems) => prevItems.filter((item) => item.quantity > 0));
+    setItems((prevItems) => prevItems.filter((item) => item.quantidade > 0));
   };
 
   return (
@@ -136,10 +190,10 @@ export default function FormCaixa() {
             <h2 >Lançamento de vendas</h2>
           </div>
           <div className="row mb-5">
-            <h4 className="p-0">Selecione um Cliente</h4>
+            <h4 className="p-0">Informe CPF do Cliente</h4>
             <input className="form-control form-control-lg"
               type="text"
-              placeholder="Digite nome ou CPF..."
+              placeholder="000.000.000-00"
               aria-label=".form-control-lg example"
               value={searchTermCliente}
               onChange={handleSearchChangeCliente}
@@ -150,25 +204,25 @@ export default function FormCaixa() {
           <div className="row g-3 mb-5">
             <div>
               <table className="table">
-                <thead>
+                {/* <thead>
                   <tr className="text-center">
                     <th scope="col">ID</th>
                     <th scope="col">Nome</th>
                     <th scope="col">CPF</th>
                     <th scope="col"></th>
                   </tr>
-                </thead>
+                </thead> */}
                 <tbody>
-                  {searchResultsClientes.map((item) => {
+                  {searchResultsClientes.map((results) => {
                     return (
 
-                      <tr key={item.id} className="text-center">
-                        <th scope="row">{item.id}</th>
-                        <td>{item.nome}</td>
-                        <td>{item.cpf}</td>
+                      <tr key={results.id} className="text-center">
+                        <th scope="row">{results.id}</th>
+                        <td>{results.nome}</td>
+                        <td>{results.cpf}</td>
                         <td className="text-end">
                           <button
-                            onClick={() => handleClienteSelecionado(item.id, item.nome)}
+                            onClick={() => handleClienteSelecionado(results.id, results.nome)}
                             type="button"
                             className="btn btn-primary ms-1">
                             <i className="bi bi-check2-square"></i> Selecionar Cliente
@@ -180,7 +234,7 @@ export default function FormCaixa() {
                 </tbody>
               </table>
             </div>
-            {searchResultsClientes.length === 0 ? <div>Não existem clientes para serem apresentados.</div> : null}
+            {searchResultsClientes.length === 0 ? <div>Não existem clientes para serem apresentados.</div> : null} <br/><br/><br/><br/>
           </div>
 
           <div className="row">
@@ -225,7 +279,7 @@ export default function FormCaixa() {
 
                         <tr key={item.id} className="text-center">
                           <th scope="row">{item.id}</th>
-                          <td>{item.medicamento}</td>
+                          <td>{item.nome}</td>
                           <td>{formatarValor(item.preco)}</td>
                           <td className="text-end">
                             <button
@@ -265,9 +319,9 @@ export default function FormCaixa() {
                     <div key={item.id} className='container'>
                       <div className='row mb-2'>
                         <span className='row'>{item.medicamento}</span>
-                        <span className='col-3 p-2'>{item.quantity} UN </span>
-                        <span className='col-4 p-2'>x {formatarValor(item.preco)}</span>
-                        <span className='col-4 p-2'>{formatarValor(item.quantity * item.preco)}</span>
+                        <span className='col-3 p-2'>{item.quantidade} UN </span>
+                        <span className='col-4 p-2'>x {formatarValor(item.precoUnitario)}</span>
+                        <span className='col-4 p-2'>{formatarValor(item.quantidade * item.precoUnitario)}</span>
                         <div className='col-1'>
                           <button className="btn btn-danger btn-sm" onClick={() => removeItemFromSale(item.id)}><i className="bi bi-trash3-fill"></i></button>
                         </div>
@@ -281,7 +335,7 @@ export default function FormCaixa() {
 
             <div className="row text-center" style={{ color: "red", fontWeight: "bold", fontSize: "1.5rem" }}>
               <div className="col-sm-6">VALOR TOTAL</div>
-              <div id="valorTotal" className="col-sm-6">{formatarValor(items.reduce((acc, item) => acc + item.quantity * item.preco, 0))}</div>
+              <div id="valorTotal" className="col-sm-6">{formatarValor(items.reduce((acc, item) => acc + item.quantidade * item.precoUnitario, 0))}</div>
             </div>
 
 
@@ -310,7 +364,7 @@ export default function FormCaixa() {
             </div>
             <div className="modal-body">
               <div>Cliente: <b>{nomeCliente}</b></div>
-              <div>Valor total:  <b>{formatarValor(items.reduce((acc, item) => acc + item.quantity * item.preco, 0))}</b></div><br/>
+              <div>Valor total:  <b>{formatarValor(items.reduce((acc, item) => acc + item.quantidade * item.precoUnitario, 0))}</b></div><br/>
               <fieldset className="col-md-6">
                 <label htmlFor="tipo" className="form-label">
                   Forma de pagamento
@@ -320,19 +374,19 @@ export default function FormCaixa() {
                   className="form-select"
                   aria-label="Selecione o tipo do medicamento"
                   required
+                  value={formaPagSelect}
                   onChange={event => setFormaPagSelect(event.target.value)}
                 >
-                  <option ></option>
                   {formaPag.map((tipo) => (
 
-                    <option value={tipo.id} key={tipo.id}> {tipo.descricao} </option>
+                  <option value={tipo.id} key={tipo.id}>{tipo.id} - {tipo.descricao}</option>
                   ))}
                 </select>
               </fieldset>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
-              <button type="button" className="btn btn-success">Finalizar Pagamento</button>
+              <button type="button" className="btn btn-success" onClick={salvarCompra}>Finalizar Pagamento</button>
             </div>
           </div>
         </div>

@@ -1,44 +1,47 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import axios from 'axios';
+import { useDadosFarmacia } from "../contexts/useDadosFarmacia";
+import { NavLink, useNavigate } from "react-router-dom";
 
+export default function FormCadastraFabricante() {
+  //Objeto reservado para montar um medicamento que apos validacao sera enviado para lista de medicamentos.
 
-export default function FormEditaFornecedor() {
-
-  const { id } = useParams();
   const navigate = useNavigate();
 
-  const [edit, setEdit] = useState([]);
-  const [nome, setFornecedorNome] = useState("");
-  const [cnpj, setFornecedorCnpj] = useState("");
-  const [endereco, setFornecedorEndereco ] = useState({
+  const [nome_fabricante, setNome] = useState("");
+  const [cnpj_fabricante, setCnpj] = useState("");
+  const [endereco_fabricante, setEndereco] = useState({
     cep: '',
     logradouro: '',
     municipio: '',
-    bairro: '',
     estado: '',
     complemento: '',
-    numero: ''
-  });
+    numero:''
+  }); 
 
 
-  console.log(edit)
+  const salvarFabricante = (e) => {
 
-
-  const salvarEdicaoFornecedor = (e) => {
-
-    axios.put(`http://localhost:5000/fornecedor/${id}`, {
-      nome: nome,
-      cnpj: cnpj,
-      endereco: endereco,
+    axios.post('http://localhost:5000/fabricantes', {
+      nome: nome_fabricante,
+      cnpj: cnpj_fabricante,
+      endereco:
+      {
+        cep: endereco_fabricante.cep,
+        logradouro: endereco_fabricante.logradouro,
+        municipio: endereco_fabricante.municipio,
+        estado: endereco_fabricante.estado,
+        complemento: endereco_fabricante.complemento,
+        numero: endereco_fabricante.numero
+      }
     })
 
       .then(function (response) {
+        alert("Fabricante salvo com sucesso!");
         
-        alert("Fornecedor salvo com sucesso!");               
-        navigate("/lista-fornecedores")
+        navigate("/caixa")
         console.log(response);
-        
+
       })
 
       .catch(function (error) {
@@ -50,56 +53,49 @@ export default function FormEditaFornecedor() {
 
   }
 
-  useEffect(() => {
-    axios.get(`http://localhost:5000/fornecedor/${id}`)
-      .then(response => {
-        setEdit(response.data);
-        setFornecedorNome(response.data.nome);
-        setFornecedorCnpj(response.data.cnpj);
-        setFornecedorEndereco(response.data.endereco);
-        
-
-      })
-      .catch(error => {
-        console.error("Erro ao buscar medicamentos:", error);
-      });
-  }, []);
-
   return (
-    <div className="container">
-      <div className="row justify-content-center mt-2 pt-5">
+    //Formulario criado com bootstrap e feito modificacoes para responsividade, em cada input existe um onchange que envia valor para var farmacia
+    <div
+      className="container"
+      onLoad={() => document.getElementById("reset").click()}
+    >
+      <div className="row justify-content-center">
         <form
           autoComplete="off"
-          className="row g-3 p-4"
-          onSubmit={salvarEdicaoFornecedor}
+          className="row g-3 mt-5 ps-4 pe-4 pt-5"
+          onSubmit={(e) => {
+            e.preventDefault();
+            salvarFabricante();
+          }}
         >
-          <h4>Editar Fornecedor:</h4>
-          <fieldset className="col-md-4">
+          <h4>Cadastro do Fabricante</h4>
+          <fieldset className="col-md-6 col-lg-8">
             <label htmlFor="nome" className="form-label">
-              fornecedor
+              Nome
             </label>
             <input
-              value={nome || ""}
+              value={nome_fabricante || ''}
+              onChange={event => setNome(event.target.value)}
               type="text"
               className="form-control"
               id="nome"
               placeholder="Informe o nome do fornecedor"
               required
-              onChange={event => setFornecedorNome(event.target.value)}
             />
-          </fieldset>         
-          <fieldset className="col-md-4">
+          </fieldset>
+          <fieldset className="col-md-6 col-lg-4">
             <label htmlFor="cnpj" className="form-label">
-              cnpj
+              CNPJ
             </label>
             <input
-              value={cnpj}
+              value={cnpj_fabricante || ''}
+              onChange={event => setCnpj(event.target.value)}
               type="text"
               className="form-control"
               id="cnpj"
-              placeholder="Informe o CNPJ"
+              placeholder="00.000.000/0000-00"
               required
-              onChange={event => setFornecedorCnpj(event.target.value)}
+              maxLength={18}
             />
           </fieldset>
 
@@ -107,16 +103,17 @@ export default function FormEditaFornecedor() {
             <label htmlFor="cep" className="form-label">
               CEP
             </label>
-            <input
-              value={endereco.cep || ""}
-              type="text"
+            <input     
+            value={endereco_fabricante.cep || ''}         
+              type="number"
               className="form-control"
               id="cep"
+              placeholder="Apenas números {8}"
+              pattern="^(?=.*[0-9])[0-9]{8}$"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, cep: e.target.value })
+                setEndereco({ ...endereco_fabricante, cep: e.target.value })
               }
-
             />
           </fieldset>
           <fieldset className="col-md-8 col-lg-6">
@@ -124,14 +121,14 @@ export default function FormEditaFornecedor() {
               Logradouro
             </label>
             <input
-              value={endereco.logradouro || ""}
+              value={endereco_fabricante.logradouro || ''}
               type="phone"
               className="form-control"
               id="logradouro"
               placeholder="Rua/Avenida . . ."
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, logradouro: e.target.value })
+                setEndereco({ ...endereco_fabricante, logradouro: e.target.value })
               }
             />
           </fieldset>
@@ -140,14 +137,14 @@ export default function FormEditaFornecedor() {
               Número
             </label>
             <input
-              value={endereco.numero || ""}
+              value={endereco_fabricante.numero || ''}
               type="number"
               className="form-control"
               id="numero"
               placeholder="0000"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, numero: e.target.value })
+                setEndereco({ ...endereco_fabricante, numero: e.target.value })
               }
             />
           </fieldset>
@@ -156,14 +153,14 @@ export default function FormEditaFornecedor() {
               Estado
             </label>
             <input
-              value={endereco.estado || ""}
+              value={endereco_fabricante.estado || ''}
               type="text"
               className="form-control"
               id="estado"
               placeholder="Informe o estado"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, estado: e.target.value })
+                setEndereco({ ...endereco_fabricante, estado: e.target.value })
               }
             />
           </fieldset>
@@ -172,14 +169,14 @@ export default function FormEditaFornecedor() {
               Bairro
             </label>
             <input
-              value={endereco.bairro || ""}
+              value={endereco_fabricante.bairro || ''}
               type="text"
               className="form-control"
               id="bairro"
               placeholder="Informe o bairro"
               required
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, bairro: e.target.value })
+                setEndereco({ ...endereco_fabricante, bairro: e.target.value })
               }
             />
           </fieldset>
@@ -188,14 +185,14 @@ export default function FormEditaFornecedor() {
               Cidade
             </label>
             <input
-              value={endereco.municipio || ""}
+              value={endereco_fabricante.municipio || ''}
               type="text"
               className="form-control"
               id="cidade"
               placeholder="Informe a cidade"
-              required
+              required              
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, municipio: e.target.value })
+                setEndereco({ ...endereco_fabricante, municipio: e.target.value })
               }
             />
           </fieldset>
@@ -205,34 +202,22 @@ export default function FormEditaFornecedor() {
               Complemento
             </label>
             <input
-              value={endereco.complemento || ""}
+              value={endereco_fabricante.complemento || ''}
               type="text"
               className="form-control"
               id="complemento"
               placeholder="Perto do estabelecimento . . . "
               onChange={(e) =>
-                setFornecedorEndereco({ ...endereco, complemento: e.target.value })
+                setEndereco({ ...endereco_fabricante, complemento: e.target.value })
               }
             />
           </fieldset>
- 
-          {/* <fieldset className="col-md-12">
-            <label htmlFor="inputDescricao" className="form-label">
-              Descrição
-            </label>
-            <textarea
-              value=""
-              className="form-control"
-              id="inputDescricao"
-              rows="5"
-              maxLength={870}
 
-            ></textarea>
-          </fieldset> */}
+
           <div className="d-grid gap-1 d-md-flex justify-content-md-end">
-          <NavLink to={"/lista-fornecedores"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
+          <NavLink to={"/caixa"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
             <input
-              value="Atualizar"
+              value="Cadastrar"
               type="submit"
               className="btn btn-success"
             />
