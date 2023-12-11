@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useDadosFarmacia } from "../contexts/useDadosFarmacia";
 import { NavLink, useNavigate } from "react-router-dom";
+import MenuNavegacao from "../components/MenuNavegacao";
 
 export default function FormCadastraFabricante() {
   //Objeto reservado para montar um medicamento que apos validacao sera enviado para lista de medicamentos.
@@ -16,13 +17,14 @@ export default function FormCadastraFabricante() {
     municipio: '',
     estado: '',
     complemento: '',
-    numero:''
+    numero:'',
+    bairro: ''
   }); 
 
 
   const salvarFabricante = (e) => {
 
-    axios.post('http://localhost:5000/fabricantes', {
+    axios.post('https://app-7gnwrtklwa-rj.a.run.app/api/fabricantes', {
       nome: nome_fabricante,
       cnpj: cnpj_fabricante,
       endereco:
@@ -32,7 +34,8 @@ export default function FormCadastraFabricante() {
         municipio: endereco_fabricante.municipio,
         estado: endereco_fabricante.estado,
         complemento: endereco_fabricante.complemento,
-        numero: endereco_fabricante.numero
+        numero: endereco_fabricante.numero,
+        bairro: endereco_fabricante.bairro
       }
     })
 

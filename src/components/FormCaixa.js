@@ -1,5 +1,5 @@
 import logoNota from "../imagens/logo-farmacia-alpha-cupom.png"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -18,6 +18,12 @@ export default function FormCaixa() {
 
   const [formaPag, setFormaPag] = useState([]);
   const [formaPagSelect, setFormaPagSelect] = useState(1);
+
+  const btnRef = useRef(null);
+
+  const fecharModal = () => {
+    btnRef.current.click();
+  }
 
   const navigate = useNavigate();
 
@@ -63,7 +69,7 @@ export default function FormCaixa() {
       setSearchResults([]);
 
       // Feche o modal
-      navigate("/caixa");
+      fecharModal();
       // Adicione lógica aqui se necessário
       console.log(dadosCompra);
 
@@ -385,7 +391,7 @@ export default function FormCaixa() {
               </fieldset>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+              <button type="button" className="btn btn-danger" id="btnFecharModal" data-bs-dismiss="modal" ref={btnRef}>Fechar</button>
               <button type="button" className="btn btn-success" onClick={salvarCompra}>Finalizar Pagamento</button>
             </div>
           </div>

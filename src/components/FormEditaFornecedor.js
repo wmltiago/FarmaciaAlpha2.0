@@ -27,7 +27,7 @@ export default function FormEditaFornecedor() {
 
   const salvarEdicaoFornecedor = (e) => {
 
-    axios.put(`http://localhost:5000/fornecedor/${id}`, {
+    axios.put(`https://app-7gnwrtklwa-rj.a.run.app/api/fornecedores/${id}`, {
       nome: nome,
       cnpj: cnpj,
       endereco: endereco,
@@ -51,7 +51,7 @@ export default function FormEditaFornecedor() {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/fornecedor/${id}`)
+    axios.get(`https://app-7gnwrtklwa-rj.a.run.app/api/fornecedores/${id}`)
       .then(response => {
         setEdit(response.data);
         setFornecedorNome(response.data.nome);

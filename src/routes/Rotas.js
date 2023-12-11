@@ -16,6 +16,10 @@ import EditarCliente from "../pages/EditarCliente";
 import ListaFornecedores from "../pages/ListaFornecedores";
 import EditarFornecedores from "../pages/EditarFornecedores";
 import CadastraFornecedor from "../pages/CadastraFornecedor";
+import FormCadastraFabricante from "../components/FormCadastraFabricante";
+import ListaFabricantes from "../pages/ListaFabricantes";
+import CadastraFabricante from "../pages/CadastraFabricante";
+import EditarFabricantes from "../pages/EditarFabricantes";
 
 export default function Rotas() {
   return (
@@ -41,6 +45,10 @@ export default function Rotas() {
         <Route path="/cadastra-fornecedor" element={<CadastraFornecedor />} />
         <Route path="/lista-fornecedores" element={<ListaFornecedores />} />
         <Route path="/formEditarFornecedor/:id" element={<EditarFornecedores />} />
+        
+        <Route path="/cadastra-fabricante" element={<CadastraFabricante/>} />
+        <Route path="/lista-fabricantes" element={<ListaFabricantes/>} />
+        <Route path="/formEditarFabricante/:id" element={<EditarFabricantes/>} />
 
         <Route path="*" element={<NaoEncontrado />} />
       </Routes>

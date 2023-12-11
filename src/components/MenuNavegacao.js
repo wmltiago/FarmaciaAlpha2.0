@@ -62,8 +62,8 @@ export default function MenuNavegacao() {
                   Fabricante
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <NavLink className="dropdown-item" to={"/cadastra-medicamento"}>Cadastrar</NavLink>
-                  <NavLink className="dropdown-item" to={"/lista-medicamentos2"}>Listagem</NavLink>
+                  <NavLink className="dropdown-item" to={"/cadastra-fabricante"}>Cadastrar</NavLink>
+                  <NavLink className="dropdown-item" to={"/lista-fabricantes"}>Listagem</NavLink>
                 </div>
               </li>
               <li key="dropdown" className="nav-item dropdown">

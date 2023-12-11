@@ -19,8 +19,8 @@ export default function FormEditaMedicamento() {
   const [conteudoDoMedicamento, setConteudoDoMedicamento] = useState("");
 
   console.log(edit)
-  console.log("TESTE CONTEUDO",conteudoDoMedicamento)
-  
+  console.log("TESTE CONTEUDO", conteudoDoMedicamento)
+
 
   const [listatipoMedicacao, setTipoMedicacao] = useState([]);
   const [fabricante, setFabricante] = useState([]);
@@ -38,7 +38,7 @@ export default function FormEditaMedicamento() {
       const data = response.data;
 
       setTipoConteudo(data);
-      console.log("Conteudos",data);
+      console.log("Conteudos", data);
 
     } catch (error) {
       console.log(error);
@@ -125,7 +125,7 @@ export default function FormEditaMedicamento() {
       tipoMedicacao: [{
         id: Number(tipoMedicamento)
       }],
-      preco: preco      
+      preco: preco
     })
 
       .then(function (response) {
@@ -200,7 +200,7 @@ export default function FormEditaMedicamento() {
               value={fabricanteMedicamento}
               onChange={event => setFabricanteMedicamento(event.target.value)}
             >
-
+              <option>  </option>
               {fabricante.map((fabricante) => (
                 <option value={fabricante.id} key={fabricante.id}> {fabricante.nome} </option>
               ))}
@@ -219,6 +219,7 @@ export default function FormEditaMedicamento() {
               value={fornecedorMedicamento.id}
               onChange={event => setFornecedorMedicamento(event.target.value)}
             >
+              <option>  </option>
               {fornecedor.map((fornecedor) => (
                 <option value={fornecedor.id} key={fornecedor.id}> {fornecedor.nome} </option>
               ))}

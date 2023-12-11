@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
-export default function listaFabricantes() {
+export default function ListaFabricantes() {
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
   const [fabricantes, setFabricantes] = useState([]);
 
   let listaFabricantes = fabricantes;
 
   useEffect(() => {
-    axios.get("http://localhost:5000/fabricantes/")
+    axios.get("https://app-7gnwrtklwa-rj.a.run.app/api/fabricantes")
       .then(response => {
         setFabricantes(response.data);
         setFiltro(response.data);

@@ -175,7 +175,7 @@ export default function FormCadastraMedicamento() {
               id="fabricante"
               className="form-select"
               aria-label="Selecione o fabricante"
-              required
+              
               value={fabricanteMedicamento ? fabricanteMedicamento : ''}
               onChange={event => setFabricanteMedicamento(event.target.value)}
             >
@@ -193,7 +193,7 @@ export default function FormCadastraMedicamento() {
               id="fornecedor"
               className="form-select"
               aria-label="Selecione o fornecedor"
-              required
+              
               value={fornecedorMedicamento ? fornecedorMedicamento : ''}
               onChange={event => setFornecedorMedicamento(event.target.value)}
             >

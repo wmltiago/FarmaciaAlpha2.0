@@ -9,9 +9,9 @@ export default function FormEditaFabricante() {
   const navigate = useNavigate();
 
   const [edit, setEdit] = useState([]);
-  const [nome_fabricante, setFabricanteNome] = useState("");
-  const [cnpj_fabricante, setFabricanteCnpj] = useState("");
-  const [endereco_fabricante, setFabricanteEndereco ] = useState({
+  const [nome, setFabricanteNome] = useState("");
+  const [cnpj, setFabricanteCnpj] = useState("");
+  const [endereco, setFabricanteEndereco ] = useState({
     cep: '',
     logradouro: '',
     municipio: '',
@@ -27,10 +27,10 @@ export default function FormEditaFabricante() {
 
   const salvarEdicaoFabricante = (e) => {
 
-    axios.put(`http://localhost:5000/fabricante/${id}`, {
-      nome: nome_fabricante,
-      cnpj: cnpj_fabricante,
-      endereco: endereco_fabricante,
+    axios.put(`https://app-7gnwrtklwa-rj.a.run.app/api/fabricantes/${id}`, {
+      nome: nome,
+      cnpj: cnpj,
+      endereco: endereco,
     })
 
       .then(function (response) {
@@ -51,7 +51,7 @@ export default function FormEditaFabricante() {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/fabricante/${id}`)
+    axios.get(`https://app-7gnwrtklwa-rj.a.run.app/api/fabricantes/${id}`)
       .then(response => {
         setEdit(response.data);
         setFabricanteNome(response.data.fabricante);
@@ -73,21 +73,7 @@ export default function FormEditaFabricante() {
           className="row g-3 p-4"
           onSubmit={salvarEdicaoFabricante}
         >
-          <h4>Editar Fabricante:</h4>
-          <fieldset className="col-md-4">
-            <label htmlFor="fabricante" className="form-label">
-              Fabricante
-            </label>
-            <input
-              value={fabricante}
-              type="text"
-              className="form-control"
-              id="fabricante"
-              placeholder="Informe o nome do fornecedor"
-              required
-              onChange={event => setFabricanteNome(event.target.value)}
-            />
-          </fieldset>
+          
 
           <h4>Editar Fabricante:</h4>
           <fieldset className="col-md-4">
@@ -232,7 +218,7 @@ export default function FormEditaFabricante() {
             ></textarea>
           </fieldset> */}
           <div className="d-grid gap-1 d-md-flex justify-content-md-end">
-          <NavLink to={"/ListaFabricantes/"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
+          <NavLink to={"/lista-fabricantes"}><button className="btn btn-secondary" type="button" to="">Voltar</button></NavLink>
             <input
               value="Atualizar"
               type="submit"
