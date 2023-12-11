@@ -105,7 +105,7 @@ export default function ListaMedicamentos2() {
                       <tr key={item.id}>
                         <th scope="row">{item.id}</th>
                         <td>{item.nome}</td>                        
-                        <td>{item.tipos[0].descricao} - {item.tipoConteudo.descricao} - {item.conteudo}</td>                        
+                        <td>{item?.tipos[0]?.descricao || "Descrição não cadastrado"} - {item?.tipoConteudo.descricao || "Conteudo não cadastrado"} - {item?.conteudo || "Não cadastrado"}</td>                        
                         <td>R$ {item.preco}</td>
                         <td>
                           <div className="dropdown">
