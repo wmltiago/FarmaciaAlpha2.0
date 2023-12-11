@@ -8,6 +8,24 @@ export default function ListaFornecedores() {
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
   const [fornecedores, setFornecedores] = useState([]);
 
+
+  const apagaFornecedor = (id) => {
+    const confirmacao = window.confirm("Tem certeza que deseja excluir este fornecedor?");
+
+    if (confirmacao) {
+      axios.delete(`https://app-7gnwrtklwa-rj.a.run.app/api/fornecedores/${id}`)
+        .then(response => {
+          const novaLista = listaAnterior.filter((item) => item.id !== id);
+          setListaAnterior(novaLista);
+          alert(`O fornecedor foi excluído com sucesso.`);
+        })
+        .catch(error => {
+          console.error("Erro ao excluir fornecedor:", error);
+          alert(`Erro ao excluir o fornecedor. Tente novamente.`);
+        });
+    }
+  }
+
   let listaFornecedores = fornecedores;
 
   useEffect(() => {
@@ -103,8 +121,7 @@ export default function ListaFornecedores() {
                             </button>
                             <ul className="dropdown-menu">
                               <li><NavLink className="dropdown-item" to={`/formEditarFornecedor/${item.id}`}>Editar</NavLink></li>
-                              <li><a className="dropdown-item" href="">Excluir</a></li>
-                              <li><a className="dropdown-item" href="">Detalhes</a></li>
+                              <li><a className="dropdown-item" href=""onClick={() => apagaFornecedor(item.id)}>Excluir</a></li>
                             </ul>
                           </div>
 

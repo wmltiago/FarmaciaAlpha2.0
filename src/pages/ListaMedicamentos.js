@@ -8,6 +8,25 @@ export default function ListaMedicamentos2() {
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
   const [medicamentos, setMedicamentos] = useState([]);
 
+
+  const apagaMedicamento = (id) => {
+    const confirmacao = window.confirm("Tem certeza que deseja excluir este medicamento?");
+
+    if (confirmacao) {
+      axios.delete(`https://app-7gnwrtklwa-rj.a.run.app/api/medicacoes/${id}`)
+        .then(response => {
+          const novaLista = listaAnterior.filter((item) => item.id !== id);
+          setListaAnterior(novaLista);
+          alert(`O medicamento foi excluído com sucesso.`);
+        })
+        .catch(error => {
+          console.error("Erro ao excluir medicamento:", error);
+          alert(`Erro ao excluir o medicamento. Tente novamente.`);
+        });
+    }
+  }
+
+
   let listaMedicamentos = medicamentos;
 
   useEffect(() => {
@@ -33,19 +52,6 @@ export default function ListaMedicamentos2() {
   // Declaro um useState para receber o que foi digitado pelo usuário
   const [termo, setTermo] = useState("");
 
-  // Funcao compartilhada por props, exclui o card a partir do id que e carregado no onclick do botao excluir dentro do modal
-  function apagaMedicamento(id) {
-    novaLista = listaAnterior.filter((item) => {
-      if (item.id !== id) {
-        return item;
-      } else {
-        return false;
-      }
-    });
-    
-    setListaAnterior(novaLista)
-    alert(`O medicamento selecionado foi excluido da lista com sucesso.`)
-  }
 
   // useEffect ira alterar o valor do filtrado toda vez que o termo digitado mudar ou algum card for excluido
   useEffect(() => {
@@ -99,7 +105,7 @@ export default function ListaMedicamentos2() {
                       <tr key={item.id}>
                         <th scope="row">{item.id}</th>
                         <td>{item.nome}</td>                        
-                        <td>{item.tipoConteudo.descricao} - {item.tipos[0].descricao} - {item.conteudo}</td>                        
+                        <td>{item.tipos[0].descricao} - {item.tipoConteudo.descricao} - {item.conteudo}</td>                        
                         <td>R$ {item.preco}</td>
                         <td>
                           <div className="dropdown">
@@ -108,8 +114,7 @@ export default function ListaMedicamentos2() {
                             </button>
                             <ul className="dropdown-menu">
                               <li><NavLink className="dropdown-item" to={`/formEditarMedicamento/${item.id}`}>Editar</NavLink></li>
-                              <li><a className="dropdown-item" href="">Excluir</a></li>
-                              <li><a className="dropdown-item" href="">Detalhes</a></li>
+                              <li><a className="dropdown-item" href=""onClick={() => apagaMedicamento(item.id)}>Excluir</a></li>
                             </ul>
                           </div>
 

@@ -5,6 +5,7 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 
 export default function ListaClientes() {
+
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
   const [clientes, setClientes] = useState([]);
 
@@ -22,7 +23,22 @@ export default function ListaClientes() {
       });
   }, []);
 
+ const apagaCliente = (id) => {
+    const confirmacao = window.confirm("Tem certeza que deseja excluir este cliente?");
 
+    if (confirmacao) {
+      axios.delete(`https://app-7gnwrtklwa-rj.a.run.app/api/clientes/${id}`)
+        .then(response => {
+          const novaLista = listaAnterior.filter((item) => item.id !== id);
+          setListaAnterior(novaLista);
+          alert(`O cliente foi excluído com sucesso.`);
+        })
+        .catch(error => {
+          console.error("Erro ao excluir cliente:", error);
+          alert(`Erro ao excluir o cliente. Tente novamente.`);
+        });
+    }
+  }
 
   // Declaro variaveis para controle da exclusao de medicamentos da lista
   const [listaAnterior, setListaAnterior] = useState(clientes)
@@ -108,8 +124,7 @@ export default function ListaClientes() {
                             </button>
                             <ul className="dropdown-menu">
                               <li><NavLink className="dropdown-item" to={`/formEditarCliente/${item.id}`}>Editar</NavLink></li>
-                              <li><a className="dropdown-item" href="">Excluir</a></li>
-                              <li><a className="dropdown-item" href="">Detalhes</a></li>
+                              <li><a className="dropdown-item" href=""onClick={() => apagaCliente(item.id)}>Excluir</a></li>                              
                             </ul>
                           </div>
 

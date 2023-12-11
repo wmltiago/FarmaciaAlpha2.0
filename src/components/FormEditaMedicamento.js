@@ -18,8 +18,7 @@ export default function FormEditaMedicamento() {
   const [fornecedorMedicamento, setFornecedorMedicamento] = useState("");
   const [conteudoDoMedicamento, setConteudoDoMedicamento] = useState("");
 
-  console.log(edit)
-  console.log("TESTE CONTEUDO", conteudoDoMedicamento)
+  console.log(edit) 
 
 
   const [listatipoMedicacao, setTipoMedicacao] = useState([]);
@@ -114,16 +113,16 @@ export default function FormEditaMedicamento() {
       nome: medicamento,
       conteudo: dosagem,
       tipoConteudo: {
-        id: Number(conteudoDoMedicamento)
+        id: Number(conteudoDoMedicamento.id)
       },
       fabricante: {
-        id: Number(fabricanteMedicamento)
+        id: Number(fabricanteMedicamento.id)
       },
       fornecedor: {
-        id: Number(fornecedorMedicamento)
+        id: Number(fornecedorMedicamento.id)
       },
       tipoMedicacao: [{
-        id: Number(tipoMedicamento)
+        id: Number(tipoMedicamento.id)
       }],
       preco: preco
     })
@@ -195,14 +194,14 @@ export default function FormEditaMedicamento() {
               id="tipo"
               className="form-select"
               aria-label="Selecione o fabricante"
-              required
-              defaultValue={edit.fabricante}
-              value={fabricanteMedicamento}
-              onChange={event => setFabricanteMedicamento(event.target.value)}
+              required    
+              defaultValue={fabricanteMedicamento.id}          
+              value={fabricanteMedicamento.id}
+              onChange={event => setFabricanteMedicamento({...fabricanteMedicamento, id: event.target.value})}
             >
-              <option>  </option>
+              
               {fabricante.map((fabricante) => (
-                <option value={fabricante.id} key={fabricante.id}> {fabricante.nome} </option>
+                <option value={fabricante.id} key={fabricante.id}>{fabricante.id} - {fabricante.nome} </option>
               ))}
             </select>
           </fieldset>
@@ -217,7 +216,7 @@ export default function FormEditaMedicamento() {
               required
               defaultValue={fornecedorMedicamento.id}
               value={fornecedorMedicamento.id}
-              onChange={event => setFornecedorMedicamento(event.target.value)}
+              onChange={event => setFornecedorMedicamento({...fornecedorMedicamento, id: event.target.value})}
             >
               <option>  </option>
               {fornecedor.map((fornecedor) => (
@@ -261,10 +260,9 @@ export default function FormEditaMedicamento() {
               id="tipoConteudo"
               className="form-select"
               aria-label="Selecione o tipo do conteudo"
-              required
-              defaultValue={conteudoDoMedicamento.id}
+              required              
               value={conteudoDoMedicamento.id}
-              onChange={event => setConteudoDoMedicamento(event.target.value)}
+              onChange={event => setConteudoDoMedicamento({...conteudoDoMedicamento, id:event.target.value})}
             >
               <option defaultValue></option>
               {tipoConteudo.map((tipo) => (
@@ -273,17 +271,16 @@ export default function FormEditaMedicamento() {
             </select>
           </fieldset>
           <fieldset className="col-md-4">
-            <label htmlFor="tipo" className="form-label">
+            <label htmlFor="tipos" className="form-label">
               Tipo de medicamento
             </label>
             <select
-              id="tipo"
+              id="tipos"
               className="form-select"
               aria-label="Selecione o tipo do medicamento"
-              required
-              defaultValue={tipoMedicamento.id}
+              required              
               value={tipoMedicamento.id}
-              onChange={event => setTipoMedicamento(event.target.value)}
+              onChange={event => setTipoMedicamento({...tipoMedicamento, id: event.target.value})}
             >
               {listatipoMedicacao.map((tipo) => (
                 <option value={tipo.id} key={tipo.id}> {tipo.descricao} </option>

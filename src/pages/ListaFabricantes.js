@@ -5,6 +5,25 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 
 export default function ListaFabricantes() {
+
+
+  const apagaFabricante = (id) => {
+    const confirmacao = window.confirm("Tem certeza que deseja excluir este fabricante?");
+
+    if (confirmacao) {
+      axios.delete(`https://app-7gnwrtklwa-rj.a.run.app/api/medicacoes/${id}`)
+        .then(response => {
+          const novaLista = listaAnterior.filter((item) => item.id !== id);
+          setListaAnterior(novaLista);
+          alert(`O fabricante foi excluído com sucesso.`);
+        })
+        .catch(error => {
+          console.error("Erro ao excluir fabricante:", error);
+          alert(`Erro ao excluir o fabricante. Tente novamente.`);
+        });
+    }
+  }
+
   // Declaro uma variavel para receber do localStorage todos os medicamentos ja cadastrados
   const [fabricantes, setFabricantes] = useState([]);
 
@@ -103,8 +122,7 @@ export default function ListaFabricantes() {
                             </button>
                             <ul className="dropdown-menu">
                               <li><NavLink className="dropdown-item" to={`/formEditarFabricante/${item.id}`}>Editar</NavLink></li>
-                              <li><a className="dropdown-item" href="">Excluir</a></li>
-                              <li><a className="dropdown-item" href="">Detalhes</a></li>
+                              <li><a className="dropdown-item" href=""onClick={() => apagaFabricante(item.id)}>Excluir</a></li>
                             </ul>
                           </div>
 
